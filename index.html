@@ -21,6 +21,7 @@
             const screenHeight = 600;
           
             document.addEventListener("keydown", updateKeys);
+            document.addEventListener("keyup", stopKeys);
             
             function sortBlocks(a, b)  
             {
@@ -40,13 +41,16 @@
             {
                 lastMovement = event.keyCode;
             }
+            
+            function stopKeys(event)
+            {                
+                if(event.keyCode == lastMovement)
+                    lastMovement = 0;
+            }
 
             function update(delta)
             {
-                player.move(lastMovement, map);
-                lastMovement = 0;
-                //isoCube.x += 1 * delta;
-                
+                player.move(lastMovement, map);                                                
                 container.children.sort(sortBlocks);
             }
 

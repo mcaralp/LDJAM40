@@ -14,7 +14,7 @@ function loadAll(callback)
         .add('cube', 'images/bloc2.png')
         .add('stairsL', 'images/stairsLeft.png')
         .add('stairsR', 'images/stairsRight.png')
-        .add('player',  'images/worker.png');
+        .add('player',  'images/player.png');
     
     for(var map in mapsList)
         PIXI.loader.add(mapsList[map],'maps/'+mapsList[map]+'.json');
