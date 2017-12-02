@@ -1,22 +1,87 @@
 <!doctype html>
 <html>
 <head>
-  <meta charset="utf-8">
-  
-  <title>Hello World</title>
-
-  <title>La péninsule la plus à l'est, C'est ça le secret! (plus ou moins)</title>
+    <meta charset="utf-8">
+    <title>La péninsule la plus à l'est, C'est ça le secret! (plus ou moins)</title>
 
 </head>
-    <script src="https://cdnjs.cloudflare.com/ajax/libs/pixi.js/4.6.2/pixi.min.js"></script>
+    <script src="js/pixi.min.js"></script>
+    <script src="js/load.js"></script>
+    <script src="js/iso.js"></script>
+    <script src="js/layer.js"></script>
+    <script src="js/player.js"></script>
+    <script src="js/map.js"></script>
 <body>
     <script type="text/javascript">
-        var type = "WebGL"
-        if(!PIXI.utils.isWebGLSupported()){
-            type = "canvas"
+        
+        let lastMovement = 0;
+        function start()
+        {
+            const screenWidth  = 800;
+            const screenHeight = 600;
+          
+            document.addEventListener("keydown", updateKeys);
+            
+            function sortBlocks(a, b)  
+            {
+                if(a.zIndex < b.zIndex) return -1;
+                if(a.zIndex > b.zIndex) return 1;
+              
+                if(a.y < b.y) return -1;
+                if(a.y > b.y) return 1;
+                
+                if(a.x > b.x) return -1;
+                if(a.x > b.x) return 1;
+                            
+                return 0;
+            }
+          
+            function updateKeys(event)
+            {
+                lastMovement = event.keyCode;
+            }
+
+            function update(delta)
+            {
+                player.move(lastMovement, map);
+                lastMovement = 0;
+                //isoCube.x += 1 * delta;
+                
+                container.children.sort(sortBlocks);
+            }
+
+            //Create the renderer
+            let app = new PIXI.Application(screenWidth, screenHeight, {backgroundColor : 'black'});
+            document.body.appendChild(app.view);
+
+            app.ticker.add(update);
+
+            /*
+            let isoCube = PIXI.Sprite.fromImage('images/placeholder.png');
+            isoCube.anchor.set(0.5);
+
+            isoCube.x = screenWidth / 2;
+            isoCube.y = screenHeight / 2;
+            */
+
+            let map = ressources["map1"];
+            let player = new Player();
+          
+            let container = new PIXI.Container(); 
+
+            map.addToStage(container);
+            player.addToStage(container);
+          
+            container.children.sort(sortBlocks);
+
+            app.stage.addChild(container);
+          
+            container.x += 400;
+            container.y += 400;
         }
         
-        PIXI.utils.sayHello(type);
+        loadAll(start);
+ 
     </script>
 </body>
 </html>
