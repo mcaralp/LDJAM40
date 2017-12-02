@@ -11,7 +11,7 @@ class Map
         for(var layer in data.layers)
             this.layers.push(new Layer(data.layers[layer],layer));
     }
-    
+
     isBlock(x, y, z)
     {
         if(z < 0 || z >= this.layers.length) return false;

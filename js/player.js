@@ -25,6 +25,11 @@ class Player
         this.speed = 20;
         
     }
+
+    getPosition()
+    {
+        return {x: this.animations[this.current].x, y: this.animations[this.current].y}
+    }
     
     initSprites()
     {
@@ -64,6 +69,10 @@ class Player
         this.z = z;
         
         let pos = iso2Cartesian(x, y, z);
+
+        this.currentX = pos.x;
+        this.currentY = pos.y;
+        this.currentZ = pos.z;
         
         for(let i = 0; i < 4; ++i)
         {
@@ -152,8 +161,8 @@ class Player
             
                 for(let i = 0; i < 4; ++i)
                 {
-                    this.animations[i].x = this.currentX;
-                    this.animations[i].y = this.currentY;
+                    this.animations[i].x = Math.round(this.currentX);
+                    this.animations[i].y = Math.round(this.currentY);
                     this.animations[i].zIndex = this.currentZ; 
                 }
             }

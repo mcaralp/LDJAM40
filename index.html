@@ -40,12 +40,17 @@
             function updateKeys(event)
             {
                 lastMovement = event.keyCode;
+
+                console.log('start');
             }
             
             function stopKeys(event)
             {                
                 if(event.keyCode == lastMovement)
+                {
+                    console.log('stop');
                     lastMovement = 0;
+                }
             }
 
             function update(delta)
@@ -54,6 +59,13 @@
                 container.children.sort(sortBlocks);
 
                 map.setCurrentLayer(player.z);
+
+                let pos = player.getPosition();
+
+                container.x = ((screenWidth / 2) - pos.x); 
+                container.y = ((screenHeight / 2) - pos.y); 
+
+                console.log(container.x, container.y)
             }
 
             //Create the renderer
@@ -81,9 +93,7 @@
             container.children.sort(sortBlocks);
 
             app.stage.addChild(container);
-          
-            container.x += 400;
-            container.y += 400;
+  
         }
         
         loadAll(start);

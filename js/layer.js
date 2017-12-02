@@ -75,8 +75,6 @@ class Layer
         let x = 0;
         let y = 0;
 
-        console.log(this.level, currentLayer < this.level);
-
         for(let i = 0; i < this.width*this.height; ++i)
         {
             if(this.isBlock(x, y))
