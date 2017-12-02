@@ -69,6 +69,31 @@ class Layer
         }
         
     }
+
+    setCurrentLayer(currentLayer)
+    {
+        let x = 0;
+        let y = 0;
+
+        console.log(this.level, currentLayer < this.level);
+
+        for(let i = 0; i < this.width*this.height; ++i)
+        {
+            if(this.isBlock(x, y))
+            {
+                if(currentLayer < this.level)                    
+                    this.sprites[i].alpha = 0.5;
+                else
+                    this.sprites[i].alpha = 1;
+            }
+
+            if(++x == this.width)
+            {
+                x = 0;
+                y++;
+            }
+        }
+    }
     
     addToStage(stage)
     {

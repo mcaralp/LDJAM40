@@ -17,6 +17,12 @@ class Map
         if(z < 0 || z >= this.layers.length) return false;
         return this.layers[z].isBlock(x, y);
     }
+
+    setCurrentLayer(currentLayer)
+    {
+        for(let i = 0; i < this.layers.length; ++i)
+            this.layers[i].setCurrentLayer(currentLayer);
+    }
     
     addToStage(stage)
     {
