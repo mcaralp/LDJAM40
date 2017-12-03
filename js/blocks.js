@@ -8,6 +8,11 @@ class Blocks
         this.cubeShapes = [];
         for(let i = 0; i < 8; ++i)
             this.cubeShapes.push(new PIXI.Texture(this.cube, new PIXI.Rectangle(i * cubeWidth, 0, cubeWidth, cubeHeight)));
+
+        this.grid = PIXI.loader.resources.grid.texture;
+        this.gridShapes = [];
+        for(let i = 0; i < 8; ++i)
+            this.gridShapes.push(new PIXI.Texture(this.grid, new PIXI.Rectangle(i * cubeWidth, 0, cubeWidth, cubeHeight)));
         
         this.stairsLT = PIXI.loader.resources.stairsLT.texture;
         this.stairsLTShapes = [];
@@ -151,6 +156,8 @@ class Blocks
                 return this.stairsRBShapes[index];
             case 6:
                 return this.altarShapes[index];
+            case 7:
+                return this.gridShapes[index];
         }
     }
 
@@ -173,6 +180,7 @@ class Blocks
                 return this.stairsRBWaterShapes[height][index];
             case 6:
                 return this.altarWaterShapes[height][index];
+
         }
     }
 
@@ -183,6 +191,7 @@ class Blocks
         switch(idBlock)
         {
             case 1:
+            case 7:
                 return false;           
             default:
                 return true;

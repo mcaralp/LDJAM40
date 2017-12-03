@@ -27,6 +27,8 @@ function loadAll(callback)
         .add('player8',  'images/Player8.png')
         .add('player9',  'images/Player9.png')
         .add('altar', 'images/hotel.png')
+        .add('grid', 'images/GridSheet.png')
+        .add('background', 'images/Background.png')
         .add('altarWater', 'images/WaterHotelSheet.png');
    
     for(var map in mapsList)
