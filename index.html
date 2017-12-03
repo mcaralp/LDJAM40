@@ -67,7 +67,10 @@
             //Create the renderer
             let app = new PIXI.Application(screenWidth, screenHeight, {backgroundColor : 'black'});
             document.body.appendChild(app.view);
-
+            
+            let bg = new PIXI.Sprite(PIXI.loader.resources.background);
+            app.stage.addChild(bg);
+    
             app.ticker.add(update);
 
             /*
@@ -86,7 +89,6 @@
 
             map.addToStage(container);
             player.addToStage(container);
-
 
 
             map.setCurrentLayer(player.z);
