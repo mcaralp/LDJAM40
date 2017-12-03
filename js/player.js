@@ -1,28 +1,17 @@
 class Player
 {
-    constructor()
+    constructor(map, orbs)
     {       
-        this.textures = [];
-        this.animation =  null;
-       
-        this.current = 2;
-               
-        this.x = 0;
-        this.y = 0;
-        this.z = 1;
-       
-        this.currentX = 0;
-        this.currentY = 0;
-        this.currentZ = 0;
-       
-        this.gotoX = 0;
-        this.gotoY = 0;
-        this.gotoZ = 0;
-       
-        this.moving = false;
-       
+        this.map = map;            
+        this.moving = false;      
         this.speed = 20;
-       
+
+        this.orbs = orbs;
+
+
+        this.initSprites(map.player.x, map.player.y, map.player.z);
+        
+        map.updateLayers(this.z);
     }
 
     getPosition()
@@ -32,18 +21,17 @@ class Player
    
     initFrames(direction, waterLevel)
     {
-        console.log(waterLevel);
         let anim = [];
         for(let j = 0; j < 4; ++j)
         {
-           let frame = new PIXI.Texture(this.globalTexture[waterLevel], new PIXI.Rectangle(direction * 72, j * 72, 72, 72));
+           let frame = new PIXI.Texture(this.globalTexture[waterLevel > 10 ? 10 : waterLevel], new PIXI.Rectangle(direction * 72, j * 72, 72, 72));
            anim.push(frame);
         }
        
         return anim;
     }
    
-    initSprites()
+    initSprites(x, y, z)
     {
         this.globalTexture = [];
         this.globalTexture[0] = PIXI.loader.resources.player.texture; 
@@ -59,11 +47,79 @@ class Player
         this.globalTexture[10] = PIXI.loader.resources.player9.texture; 
 
       
-        this.animation = new PIXI.extras.AnimatedSprite(this.initFrames(this.current, this.map.getWaterLevel(this.x, this.y, this.z)));
+        this.animation = new PIXI.extras.AnimatedSprite(this.initFrames(this.current, this.map.getWaterLevel(x, y, z)));
         this.animation.animationSpeed = 0.2;
-       
-        this.setPosition(0, 0, 1);
+
+        this.animationBase = new PIXI.extras.AnimatedSprite(this.initFrames(this.current, 0));
+        this.animationBase.animationSpeed = 0.2;
+
+        this.setPosition(x, y, z);
         this.setDirection(2);
+       
+    }
+
+    action()
+    {
+        let newX = this.x;
+        let newY = this.y;
+        switch(this.current)
+        {
+            case 3:
+                newY += 1;
+                break;
+            case 0:
+                newX -= 1;
+                break;
+            case 1:
+                newY -= 1;
+                break;
+            case 2:
+                newX += 1;
+                break;
+        }
+
+        if(this.map.isAltar(newX, newY, this.z))
+        {
+            let found = false;
+            let placable = -1;
+            for(let i = 0; i < this.orbs.length; ++i)
+            {
+                if(this.orbs[i].x == newX && this.orbs[i].y == newY && this.orbs[i].z == this.z  && this.orbs[i].isOk())
+                {
+                    found = true;
+                    this.orbs[i].goTo(this.orbs[i].states.pocket);
+
+                    
+                }
+
+                if(this.orbs[i].isPlacable())
+                {
+                    placable = i;
+                }
+
+            }
+
+            if(!found && placable != -1)
+                this.orbs[placable].goTo(this.orbs[placable].states.ok, newX, newY, this.z);
+            
+        }
+
+
+        else if(this.map.isChest(newX, newY, this.z))
+        {
+            for(let i = 0; i < this.orbs.length; ++i)
+            {                
+                if(this.orbs[i].isPlacable())
+                {
+                    this.orbs[i].goTo(this.orbs[i].states.chest);
+                }
+            }
+        }
+    }
+
+    isDrowned()
+    {
+        return this.map.getWaterLevel(this.x, this.y, this.z) >= 9;
     }
    
     setDirection(direction)
@@ -76,19 +132,23 @@ class Player
        
         if(this.animation.playing)
         {
-            this.animation.stop();      
+            
+            
+            this.animation.stop();
             this.animation.textures = this.initFrames(this.current, l1 < l2 ? l1 : l2);
-            this.animation.play();
+            this.animation.play();  
+            this.animationBase.stop(); 
+            this.animationBase.textures = this.initFrames(this.current, 0);
+            this.animationBase.play();    
+            
         }
         else
+        {
             this.animation.textures = this.initFrames(this.current,  l1 < l2 ? l1 : l2);
+            this.animationBase.textures = this.initFrames(this.current, 0);
+        }
     }
 
-    setMap(map)
-    {
-        this.map = map;
-    }
-   
     setPosition(x, y, z)
     {
         this.x = x;
@@ -112,7 +172,11 @@ class Player
         this.animation.zIndex = this.z * this.map.width * this.map.height + this.x + this.y * this.map.width;
         this.animation.gotoAndStop(0);
        
-       
+        this.animationBase.anchor.set(0.5);
+        this.animationBase.x = pos.x;
+        this.animationBase.y = pos.y;
+        this.animationBase.zIndex = this.z * this.map.width * this.map.height + this.x + this.y * this.map.width - 0.1;
+        this.animationBase.gotoAndStop(0);
     }
    
     move(movement, map)
@@ -144,14 +208,17 @@ class Player
         if(!this.moving && (newX != this.x || newY != this.y))
         {     
             let newZ = 0;
-            if(map.isBlock(newX, newY, this.z - 1) && !map.isBlock(newX, newY, this.z))
+            if(map.isBlock(newX, newY, this.z - 1) && !map.isAltar(newX, newY, this.z - 1) && !map.isBlock(newX, newY, this.z))
                 newZ = this.z;
-            else if(map.isBlock(newX, newY, this.z) && !map.isBlock(newX, newY, this.z + 1) && map.isPassable(newX, newY, this.z))
+            else if(map.isBlock(newX, newY, this.z) && !map.isBlock(newX, newY, this.z + 1) && map.getWaterLevel(newX, newY, this.z + 1) < 9 && map.isPassable(newX, newY, this.z))
                 newZ = this.z + 1;
-            else if(!map.isBlock(newX, newY, this.z) && !map.isBlock(newX, newY, this.z - 1) && map.isBlock(newX, newY, this.z - 2) && map.isPassable(this.x, this.y, this.z - 1))
+            else if(!map.isBlock(newX, newY, this.z) && !map.isBlock(newX, newY, this.z - 1) && map.getWaterLevel(newX, newY, this.z - 1) < 9 && map.isBlock(newX, newY, this.z - 2) && map.isPassable(this.x, this.y, this.z - 1))
                 newZ = this.z - 1;
-            else return;
-           
+            else 
+            {
+                this.setDirection(direction);
+                return false;
+            }
             this.gotoX = newX;
             this.gotoY = newY;
             this.gotoZ = newZ;
@@ -171,10 +238,10 @@ class Player
             }
 
             this.animation.textures = this.initFrames(this.current, this.map.getWaterLevel(this.gotoX, this.gotoY, this.gotoZ));
-
-            console.log(this.map.getWaterLevel(this.gotoX, this.gotoY, this.gotoZ));
+            this.animationBase.textures = this.initFrames(this.current, 0);
            
             this.animation.play();
+            this.animationBase.play();
                        
             this.moving = true;           
             this.setDirection(direction);
@@ -187,6 +254,8 @@ class Player
                 this.moving = false;
                 this.setPosition(this.gotoX, this.gotoY, this.gotoZ);
                 this.setDirection(this.current);
+
+                return true;
             }
             else
             {
@@ -195,19 +264,24 @@ class Player
                
                 this.animation.x = Math.round(this.currentX);
                 this.animation.y = Math.round(this.currentY);
-                let z1 = this.gotoZ * this.map.width * this.map.height + this.gotoX + this.gotoY * this.map.width + 0.1;
-                let z2 = this.z * this.map.width * this.map.height + this.x + this.y * this.map.width + 0.1;
+                this.animationBase.x = Math.round(this.currentX);
+                this.animationBase.y = Math.round(this.currentY);
+                let z1 = this.gotoZ * this.map.width * this.map.height + this.gotoX + this.gotoY * this.map.width;
+                let z2 = this.z * this.map.width * this.map.height + this.x + this.y * this.map.width;
 
-                this.animation.zIndex = z1 > z2 ? z1 : z2;
+                this.animation.zIndex = (z1 > z2 ? z1 : z2) + 0.1;
+                this.animationBase.zIndex = (z1 < z2 ? z1 : z2) - 0.1;
                
             }
         }
+
+        return true;
     }
    
     addToStage(stage)
     {
-        this.initSprites();    
-       
+      
         stage.addChild(this.animation);
+        stage.addChild(this.animationBase);
     }
 }

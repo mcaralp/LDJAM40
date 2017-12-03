@@ -17,6 +17,8 @@
     <script type="text/javascript">
         
         let lastMovement = 0;
+        let action = false;
+
         function start()
         {
             const screenWidth  = 800;
@@ -36,16 +38,17 @@
           
             function updateKeys(event)
             {
-                lastMovement = event.keyCode;
+                if(event.keyCode >= 37 && event.keyCode <= 40)
+                    lastMovement = event.keyCode;
 
-                console.log('start');
+                if(event.keyCode == 32)
+                    action = true;
             }
             
             function stopKeys(event)
             {                
                 if(event.keyCode == lastMovement)
                 {
-                    console.log('stop');
                     lastMovement = 0;
                 }
             }
@@ -53,16 +56,46 @@
             function update(delta)
             {
                 let oldZ = player.z;
-                player.move(lastMovement, map);                                                
-                container.children.sort(sortBlocks);
+                if(player.move(lastMovement, map))
+                {
+                    // TODO: update water
 
-                if(oldZ != player.z)
-                    map.setCurrentLayer(player.z);
+                }
+                
+                map.updateLayers(player.z);
 
                 let pos = player.getPosition();
 
                 container.x = ((screenWidth / 2) - pos.x); 
                 container.y = ((screenHeight / 2) - pos.y); 
+
+                container.children.sort(sortBlocks);
+
+                let winned = 0;
+
+                for(let i = 0; i < orbs.length; ++i)
+                {
+                    if(orbs[i].isDrowned())
+                        orbs[i].goTo(orbs[i].states.destroyed);
+
+                    if(orbs[i].isWinned())
+                        ++winned;
+                }
+
+                if(winned == orbs.length)
+                {
+                    // TODO: end of level
+                }
+
+                if(player.isDrowned)
+                {
+                    // TODO game over
+                }
+
+                if(action)
+                    player.action();
+
+                action = false;
             }
 
             //Create the renderer
@@ -74,32 +107,25 @@
     
             app.ticker.add(update);
 
-            /*
-            let isoCube = PIXI.Sprite.fromImage('images/placeholder.png');
-            isoCube.anchor.set(0.5);
-
-            isoCube.x = screenWidth / 2;
-            isoCube.y = screenHeight / 2;
-            */
 
             let map = ressources["map1"];
-            let player = new Player();
-            player.setMap(map);
+            let orbs = [];
 
-            let orb = new Orb();
+            let player = new Player(map, orbs);
+
+            
+
+            for(let i = 0; i < map.orbs.length; ++i)
+                orbs.push(new Orb(map, i));
             
           
             let container = new PIXI.Container(); 
 
+
             map.addToStage(container);
             player.addToStage(container);
-            orb.addToStage(container);
-
-            orb.setPosition(4, 0, 1);
-            map.setCurrentLayer(player.z);
-
-          
-            container.children.sort(sortBlocks);
+            for(let i = 0; i < map.orbs.length; ++i)
+                orbs[i].addToStage(container);
 
             app.stage.addChild(container);
   

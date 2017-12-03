@@ -39,7 +39,7 @@ class Blocks
         this.cubeWater = PIXI.loader.resources.cubeWater.texture;
 
         this.cubeWaterShapes = [];
-        for(let i = 0; i < 12; ++i)
+        for(let i = 0; i < 13; ++i)
         {
             let line = [];
             for(let j = 0; j < 8; ++j)
@@ -53,7 +53,7 @@ class Blocks
         this.stairsLTWater = PIXI.loader.resources.stairsLTWater.texture;
 
         this.stairsLTWaterShapes = [];
-        for(let i = 0; i < 12; ++i)
+        for(let i = 0; i < 13; ++i)
         {
             let line = [];
             for(let j = 0; j < 8; ++j)
@@ -66,7 +66,7 @@ class Blocks
         this.stairsRTWater = PIXI.loader.resources.stairsRTWater.texture;
 
         this.stairsRTWaterShapes = [];
-        for(let i = 0; i < 12; ++i)
+        for(let i = 0; i < 13; ++i)
         {
             let line = [];
             for(let j = 0; j < 8; ++j)
@@ -78,7 +78,7 @@ class Blocks
         this.stairsLBWater = PIXI.loader.resources.stairsLBWater.texture;
 
         this.stairsLBWaterShapes = [];
-        for(let i = 0; i < 12; ++i)
+        for(let i = 0; i < 13; ++i)
         {
             let line = [];
             for(let j = 0; j < 8; ++j)
@@ -90,7 +90,7 @@ class Blocks
         this.stairsRBWater = PIXI.loader.resources.stairsRBWater.texture;
 
         this.stairsRBWaterShapes = [];
-        for(let i = 0; i < 12; ++i)
+        for(let i = 0; i < 13; ++i)
         {
             let line = [];
             for(let j = 0; j < 8; ++j)
@@ -109,7 +109,7 @@ class Blocks
         this.altarWater = PIXI.loader.resources.altarWater.texture;
         
         this.altarWaterShapes = [];
-        for(let i = 0; i < 12; ++i)
+        for(let i = 0; i < 13; ++i)
         {
             let line = [];
             for(let j = 0; j < 8; ++j)
@@ -122,9 +122,8 @@ class Blocks
 
     isPassable(block)
     {
-        let idBlock = this.getId(block);
 
-        switch(idBlock)
+        switch(block)
         {
             case 2:
             case 3:
@@ -141,9 +140,8 @@ class Blocks
     getBlock(block, top, left, right)
     {
         let index = (top << 2) + (left << 1) + right;
-        let idBlock = this.getId(block);
                 
-        switch(idBlock)
+        switch(block)
         {
             case 1:
                 return this.cubeShapes[index];                
@@ -165,9 +163,8 @@ class Blocks
     getWater(block, top, left, right, height)
     {
         let index = (top << 2) + (left << 1) + right;
-        let idBlock = this.getId(block);
 
-        switch(idBlock)
+        switch(block)
         {
             case 0:
                 return this.cubeWaterShapes[height][index];                
@@ -187,9 +184,7 @@ class Blocks
 
     isWater(block)
     {
-        let idBlock = this.getId(block);
-
-        switch(idBlock)
+        switch(block)
         {
             case 1:
             case 7:
@@ -198,14 +193,20 @@ class Blocks
                 return true;
         }
     }
-    
-    getId(block)
+
+    isAltar(block)
     {
-        return block & 0xF;
+        return block == 6;
     }
-    
-    getColor(block)
+
+    isChest(block)
     {
-        return this.colors[(block >> 4) & 0xF];
+        return block == 8;
+    }
+
+    
+    getColor(id)
+    {
+        return this.colors[id];
     }
 }

@@ -6,6 +6,9 @@ class Map
         this.height = data.height;
         this.layers = [];
 
+        this.orbs = data.orbs;
+        this.player = data.player;
+
         this.layers.push(Layer.emptyLayer(this.width, this.height, data.layers.length, undefined));
        
         for(let i = data.layers.length; i--;)
@@ -23,12 +26,24 @@ class Map
         return this.layers[z].isBlock(x, y);
     }
 
-    setCurrentLayer(currentLayer)
+    isAltar(x, y, z)
+    {
+        if(z < 0 || z >= this.layers.length) return false;
+        return this.layers[z].isAltar(x, y);
+    }
+
+    isChest(x, y, z)
+    {
+        if(z < 0 || z >= this.layers.length) return false;
+        return this.layers[z].isChest(x, y);
+    }
+
+    updateLayers(currentLayer)
     {
         for(let i = this.layers.length; i--;)
-            this.layers[i].setCurrentLayer(currentLayer);
+            this.layers[i].update(currentLayer);
     }
-   
+
     addToStage(stage)
     {
         for(let i = 0; i < this.layers.length; ++i)
