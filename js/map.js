@@ -1,5 +1,3 @@
-
-
 class Map
 {
     constructor(data)
@@ -7,9 +5,9 @@ class Map
         this.width = data.width;
         this.height = data.height;
         this.layers = [];
-        
-        for(var layer in data.layers)
-            this.layers.push(new Layer(data.layers[layer],layer));
+       
+        for(let i = data.layers.length; i--;)
+            this.layers.unshift(new Layer(data.layers[i], i, this.layers[0]));
     }
 
     isBlock(x, y, z)
@@ -20,10 +18,10 @@ class Map
 
     setCurrentLayer(currentLayer)
     {
-        for(let i = 0; i < this.layers.length; ++i)
+        for(let i = this.layers.length; i--;)
             this.layers[i].setCurrentLayer(currentLayer);
     }
-    
+   
     addToStage(stage)
     {
         for(let i = 0; i < this.layers.length; ++i)

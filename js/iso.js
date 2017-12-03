@@ -1,7 +1,7 @@
 
 var diamondHeight = 32;
 var diamondWidth = 64;
-var cubeHeight = 50;
+var cubeHeight = 56;
 var cubeWidth = diamondWidth;
 
 function iso2Cartesian(isoX, isoY, isoZ)

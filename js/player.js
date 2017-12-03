@@ -1,93 +1,98 @@
-
 class Player
 {
     constructor()
-    {        
+    {       
         this.textures = [];
-        this.animations =  [];
-        
+        this.animation =  null;
+       
         this.current = 2;
-                
+               
         this.x = 0;
         this.y = 0;
         this.z = 1;
-        
+       
         this.currentX = 0;
         this.currentY = 0;
         this.currentZ = 0;
-        
+       
         this.gotoX = 0;
         this.gotoY = 0;
         this.gotoZ = 0;
-        
+       
         this.moving = false;
-        
+       
         this.speed = 20;
-        
+       
     }
 
     getPosition()
     {
-        return {x: this.animations[this.current].x, y: this.animations[this.current].y}
+        return {x: this.animation.x, y: this.animation.y}
     }
-    
+   
+    initFrames(direction)
+    {
+        let anim = [];
+        for(let j = 0; j < 4; ++j)
+        {
+           let frame = new PIXI.Texture(this.globalTexture, new PIXI.Rectangle(direction * 72, j * 72, 72, 72));
+           anim.push(frame);
+        }
+       
+        return anim;
+    }
+   
     initSprites()
     {
-        this.globalTexture = PIXI.loader.resources.player.texture;
-        
-        for(let i = 0; i < 4; ++i)
-        {
-            let anim = [];
-            for(let j = 0; j < 4; ++j)
-            {
-               let frame = new PIXI.Texture(this.globalTexture, new PIXI.Rectangle(i * 72, j * 72, 72, 72));
-               anim.push(frame);
-            }
-            
-            this.textures.push(anim);
-            this.animations.push(new PIXI.extras.AnimatedSprite(anim));
-            this.animations[i].animationSpeed = 0.2;
-        }
-        
+        this.globalTexture = PIXI.loader.resources.player.texture;      
+       
+        this.animation = new PIXI.extras.AnimatedSprite(this.initFrames(this.current));
+        this.animation.animationSpeed = 0.2;
+       
         this.setPosition(0, 0, 1);
         this.setDirection(2);
     }
-    
+   
     setDirection(direction)
     {
         if(direction < 0 || direction >= 4) return;
         this.current = direction;
-                
-        for(let i = 0; i < 4; ++i)
-            this.animations[i].visible = (i == this.current);        
+       
+        if(this.animation.playing)
+        {
+            this.animation.stop();      
+            this.animation.textures = this.initFrames(this.current);
+            this.animation.play();
+        }
+        else
+            this.animation.textures = this.initFrames(this.current);
     }
-    
+   
     setPosition(x, y, z)
     {
         this.x = x;
         this.y = y;
         this.z = z;
-        
+       
         let pos = iso2Cartesian(x, y, z);
 
         this.currentX = pos.x;
         this.currentY = pos.y;
         this.currentZ = pos.z;
-        
-        for(let i = 0; i < 4; ++i)
-        {
-            this.animations[i].anchor.set(0.5);
-            this.animations[i].x = pos.x;
-            this.animations[i].y = pos.y;
-            this.animations[i].zIndex = this.z; 
-            
-            this.animations[i].gotoAndStop(0);
-        }
-        
+       
+  
+        this.animation.anchor.set(0.5);
+        this.animation.x = pos.x;
+        this.animation.y = pos.y;
+        this.animation.zIndex = this.z;
+        this.animation.gotoAndStop(0);
+       
+       
     }
-    
+   
     move(movement, map)
-    {   
+    {  
+       
         let newX = this.x;
         let newY = this.y;
         let direction = -1;
@@ -110,9 +115,9 @@ class Player
                 direction = 2;
                 break;
         }
-               
+              
         if(!this.moving && (newX != this.x || newY != this.y))
-        {      
+        {     
             let newZ = 0;
             if(map.isBlock(newX, newY, this.z - 1) && !map.isBlock(newX, newY, this.z))
                 newZ = this.z;
@@ -121,32 +126,32 @@ class Player
             else if(!map.isBlock(newX, newY, this.z) && !map.isBlock(newX, newY, this.z - 1) && map.isBlock(newX, newY, this.z - 2))
                 newZ = this.z - 1;
             else return;
-            
+           
             this.gotoX = newX;
             this.gotoY = newY;
             this.gotoZ = newZ;
-                       
-            let pos = iso2Cartesian(this.x, this.y, this.z);  
-            
+                      
+            let pos = iso2Cartesian(this.x, this.y, this.z); 
+           
             this.currentX = pos.x;
             this.currentY = pos.y;
             this.currentZ = newZ < this.z ? this.z : this.gotoZ;
-            
+           
             let cible = iso2Cartesian(this.gotoX, this.gotoY, this.gotoZ);
-            
+           
             this.movement = {
                 x: (cible.x - this.currentX) / this.speed,
                 y: (cible.y - this.currentY) / this.speed,
                 cpt: 0
             }
-            
-            for(let i = 0; i < 4; ++i)
-                this.animations[i].play();
-                        
-            this.moving = true;            
+           
+           
+            this.animation.play();
+                       
+            this.moving = true;           
             this.setDirection(direction);
         }
-        
+       
         if(this.moving)
         {
             if(this.movement.cpt++ == this.speed)
@@ -157,23 +162,20 @@ class Player
             else
             {
                 this.currentX += this.movement.x;
-                this.currentY += this.movement.y;
-            
-                for(let i = 0; i < 4; ++i)
-                {
-                    this.animations[i].x = Math.round(this.currentX);
-                    this.animations[i].y = Math.round(this.currentY);
-                    this.animations[i].zIndex = this.currentZ; 
-                }
+                this.currentY += this.movement.y;           
+               
+                this.animation.x = Math.round(this.currentX);
+                this.animation.y = Math.round(this.currentY);
+                this.animation.zIndex = this.currentZ;
+               
             }
         }
     }
-    
+   
     addToStage(stage)
     {
-        this.initSprites();     
-        
-        for(let i = 0; i < 4; ++i)
-            stage.addChild(this.animations[i]);
+        this.initSprites();    
+       
+        stage.addChild(this.animation);
     }
 }
