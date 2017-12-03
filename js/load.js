@@ -28,6 +28,7 @@ function loadAll(callback)
         .add('player9',  'images/Player9.png')
         .add('altar', 'images/hotel.png')
         .add('grid', 'images/GridSheet.png')
+        .add('orb', 'images/OrbSheet.png')
         .add('background', 'images/Background.png')
         .add('altarWater', 'images/WaterHotelSheet.png');
    

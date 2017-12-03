@@ -11,6 +11,7 @@
     <script src="js/blocks.js"></script>
     <script src="js/layer.js"></script>
     <script src="js/player.js"></script>
+    <script src="js/orb.js"></script>
     <script src="js/map.js"></script>
 <body>
     <script type="text/javascript">
@@ -84,13 +85,17 @@
             let map = ressources["map1"];
             let player = new Player();
             player.setMap(map);
+
+            let orb = new Orb();
+            
           
             let container = new PIXI.Container(); 
 
             map.addToStage(container);
             player.addToStage(container);
+            orb.addToStage(container);
 
-
+            orb.setPosition(4, 0, 1);
             map.setCurrentLayer(player.z);
 
           
