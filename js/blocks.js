@@ -35,6 +35,25 @@ class Blocks
         for(let i = 0; i < 8; ++i)
             this.stairsRBShapes.push(new PIXI.Texture(this.stairsRB, new PIXI.Rectangle(0, 0, cubeWidth, cubeHeight)));
     }
+
+    isPassable(block)
+    {
+        let idBlock = this.getId(block);
+
+        console.log(idBlock);
+
+        switch(idBlock)
+        {
+            case 2:
+            case 3:
+            case 4:
+            case 5:
+                return true;
+
+            default:
+                return false;
+        }
+    }
    
     
     getBlock(block, top, left, right)

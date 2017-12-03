@@ -10,6 +10,11 @@ class Map
             this.layers.unshift(new Layer(data.layers[i], i, this.layers[0]));
     }
 
+    isPassable(x, y, z)
+    {
+        return this.layers[z].isPassable(x, y);
+    }
+
     isBlock(x, y, z)
     {
         if(z < 0 || z >= this.layers.length) return false;
