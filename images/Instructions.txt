@@ -1,0 +1,7 @@
+Your are an adventurer. Always in quest for some valuable treasures, your heard of this temple holding mystic orbs.
+
+The goal is to collect every orbs in the level and put them in your treasure chest. But things aren't that easy: Collect an orb and water will slowly submerge the temple. Collect two orbs or more and the water will flows more and more quickly.
+
+If you feel like running out of time, you can temporarily disable the deadly traps by putting back orbs on the altairs.
+
+Good luck !
