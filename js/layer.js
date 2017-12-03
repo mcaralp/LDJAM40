@@ -24,7 +24,12 @@ class Layer
    
     isTopTransparent()
     {
-       
+        return this.top === undefined || this.top.isTransparent();
+    }
+
+    isTopBlock(x, y)
+    {
+        return this.top !== undefined && this.top.isBlock(x, y);
     }
    
     isTransparent()
@@ -36,6 +41,19 @@ class Layer
     {
         if(x >= this.width && x < 0 || y >= this.height || y < 0) return false;
         return this.matrix[y][x] > 0;
+    }
+
+    computeShape(x, y)
+    {
+        let block = this.matrix[y][x];
+       
+        let left  = !this.isBlock(x + 1, y);
+        let right = !this.isBlock(x, y + 1);
+
+        let top = (!this.isTransparent() && (this.isTopTransparent() || !this.isTopBlock(x, y))) || 
+                  (this.isTransparent() && !this.isTopBlock(x, y));
+
+        return {left: left, right: right, top: top};
     }
    
     initSprites(stage)
@@ -50,11 +68,10 @@ class Layer
             {
                 let block = this.matrix[y][x];
                 let color = this.blocks.getColor(block);
+
+                let shape = this.computeShape(x, y);
                
-                let left  = !this.isBlock(x + 1, y);
-                let right = !this.isBlock(x, y + 1);
-               
-                this.sprites[i] = new PIXI.Sprite(this.blocks.getBlock(block, 1, left, right));
+                this.sprites[i] = new PIXI.Sprite(this.blocks.getBlock(block, shape.top, shape.left, shape.right));
                
                 this.sprites[i].width  = cubeWidth;
                 this.sprites[i].height = cubeHeight;
@@ -84,14 +101,28 @@ class Layer
         let x = 0;
         let y = 0;
 
+        let alpha = 0;
+        if(currentLayer < this.level)  
+        {
+            alpha = 0.5;
+            this.transparent = true;
+        } 
+        else
+        {
+            alpha = 1;
+            this.transparent = false;
+        }
+
         for(let i = 0; i < this.width*this.height; ++i)
         {
             if(this.isBlock(x, y))
             {
-                if(currentLayer < this.level)                   
-                    this.sprites[i].alpha = 0.5;
-                else
-                    this.sprites[i].alpha = 1;
+                let block = this.matrix[y][x];               
+                this.sprites[i].alpha = alpha;
+
+                let shape = this.computeShape(x, y);
+               
+                this.sprites[i].texture = this.blocks.getBlock(block, shape.top, shape.left, shape.right);
             }
 
             if(++x == this.width)

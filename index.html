@@ -56,10 +56,12 @@
 
             function update(delta)
             {
+                let oldZ = player.z;
                 player.move(lastMovement, map);                                                
                 container.children.sort(sortBlocks);
 
-                map.setCurrentLayer(player.z);
+                if(oldZ != player.z)
+                    map.setCurrentLayer(player.z);
 
                 let pos = player.getPosition();
 
@@ -88,6 +90,9 @@
 
             map.addToStage(container);
             player.addToStage(container);
+
+            map.setCurrentLayer(player.z);
+
           
             container.children.sort(sortBlocks);
 
