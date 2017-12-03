@@ -2,12 +2,7 @@ class Blocks
 {
     constructor()
     {
-        this.colors = 
-        [
-            0x55FF55,
-            0xFF5555,
-            0x5555FF
-        ];
+        this.colors = [0x040f14,0x0c232a,0x16373e,0x1f494f,0x2a5c60,0x336f71,0x38807c,0x399181,0x37a988,0x1fbd71];
         
         this.cube = PIXI.loader.resources.cube.texture;
         this.cubeShapes = [];
