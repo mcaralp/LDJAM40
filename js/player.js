@@ -121,9 +121,9 @@ class Player
             let newZ = 0;
             if(map.isBlock(newX, newY, this.z - 1) && !map.isBlock(newX, newY, this.z))
                 newZ = this.z;
-            else if(map.isBlock(newX, newY, this.z) && !map.isBlock(newX, newY, this.z + 1))
+            else if(map.isBlock(newX, newY, this.z) && !map.isBlock(newX, newY, this.z + 1) && map.isPassable(newX, newY, this.z))
                 newZ = this.z + 1;
-            else if(!map.isBlock(newX, newY, this.z) && !map.isBlock(newX, newY, this.z - 1) && map.isBlock(newX, newY, this.z - 2))
+            else if(!map.isBlock(newX, newY, this.z) && !map.isBlock(newX, newY, this.z - 1) && map.isBlock(newX, newY, this.z - 2) && map.isPassable(this.x, this.y, this.z - 1))
                 newZ = this.z - 1;
             else return;
            
