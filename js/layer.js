@@ -10,6 +10,10 @@ class Layer
         this.top = top;
         this.sprites = new Array(this.width * this.height);
         this.water   = new Array(this.width * this.height);
+
+        this.waterLevel = new Array(this.width * this.height);
+
+        this.waterLevel.fill(level == 1 ? 7 : 0);
        
         for(let i = 0; i < this.height; ++i)
         {
@@ -57,6 +61,11 @@ class Layer
     isTransparent()
     {
         return this.transparent;
+    }
+
+    getWaterLevel(x, y)
+    {
+        return this.waterLevel[x + y * this.width];
     }
    
     isBlock(x, y)
@@ -108,12 +117,12 @@ class Layer
                 //
 
             }
-            if(this.blocks.isWater(block) && this.level == 1)
+            if(this.blocks.isWater(block))
             {
                 let posWater = iso2Cartesian(x, y, this.level);
                 let shape = this.computeShape(x, y); 
 
-                this.water[i] = new PIXI.Sprite(this.blocks.getWater(block, shape.top, shape.left, shape.right, 3));
+                this.water[i] = new PIXI.Sprite(this.blocks.getWater(block, shape.top, shape.left, shape.right, this.waterLevel[i]));
                 this.water[i].anchor.set(0.5);
                 //this.water[i].alpha = 0.5;
                 this.water[i].x = posWater.x;

@@ -51,8 +51,6 @@ class Blocks
         
         this.stairsLTWater = PIXI.loader.resources.stairsLTWater.texture;
 
-        console.log(this.stairsLTWater.width, this.stairsLTWater.height);
-
         this.stairsLTWaterShapes = [];
         for(let i = 0; i < 12; ++i)
         {
@@ -99,15 +97,31 @@ class Blocks
 
             this.stairsRBWaterShapes.push(line);
         }
+
+        this.altar = PIXI.loader.resources.altar.texture;
+
+        this.altarShapes = [];
         
+        for(let i = 0; i < 8; ++i)
+            this.altarShapes.push(new PIXI.Texture(this.altar, new PIXI.Rectangle(0, 0, cubeWidth, cubeHeight)));
+
+        this.altarWater = PIXI.loader.resources.altarWater.texture;
+        
+        this.altarWaterShapes = [];
+        for(let i = 0; i < 12; ++i)
+        {
+            let line = [];
+            for(let j = 0; j < 8; ++j)
+                line.push(new PIXI.Texture(this.altarWater, new PIXI.Rectangle(j * cubeWidth, i * cubeHeight, cubeWidth, cubeHeight)));
+
+            this.altarWaterShapes.push(line);
+        }
     }
     
 
     isPassable(block)
     {
         let idBlock = this.getId(block);
-
-        console.log(idBlock);
 
         switch(idBlock)
         {
@@ -140,6 +154,8 @@ class Blocks
                 return this.stairsLBShapes[index];
             case 5:
                 return this.stairsRBShapes[index];
+            case 6:
+                return this.altarShapes[index];
         }
     }
 
@@ -148,7 +164,6 @@ class Blocks
         let index = (top << 2) + (left << 1) + right;
         let idBlock = this.getId(block);
 
-        console.log(idBlock);
         switch(idBlock)
         {
             case 0:
@@ -161,6 +176,8 @@ class Blocks
                 return this.stairsLBWaterShapes[height][index];
             case 5:
                 return this.stairsRBWaterShapes[height][index];
+            case 6:
+                return this.altarWaterShapes[height][index];
         }
     }
 

@@ -30,12 +30,13 @@ class Player
         return {x: this.animation.x, y: this.animation.y}
     }
    
-    initFrames(direction)
+    initFrames(direction, waterLevel)
     {
+        console.log(waterLevel);
         let anim = [];
         for(let j = 0; j < 4; ++j)
         {
-           let frame = new PIXI.Texture(this.globalTexture, new PIXI.Rectangle(direction * 72, j * 72, 72, 72));
+           let frame = new PIXI.Texture(this.globalTexture[waterLevel], new PIXI.Rectangle(direction * 72, j * 72, 72, 72));
            anim.push(frame);
         }
        
@@ -44,9 +45,21 @@ class Player
    
     initSprites()
     {
-        this.globalTexture = PIXI.loader.resources.player.texture;      
-       
-        this.animation = new PIXI.extras.AnimatedSprite(this.initFrames(this.current));
+        this.globalTexture = [];
+        this.globalTexture[0] = PIXI.loader.resources.player.texture; 
+        this.globalTexture[1] = PIXI.loader.resources.player0.texture;   
+        this.globalTexture[2] = PIXI.loader.resources.player1.texture;   
+        this.globalTexture[3] = PIXI.loader.resources.player2.texture;   
+        this.globalTexture[4] = PIXI.loader.resources.player3.texture;   
+        this.globalTexture[5] = PIXI.loader.resources.player4.texture;   
+        this.globalTexture[6] = PIXI.loader.resources.player5.texture;   
+        this.globalTexture[7] = PIXI.loader.resources.player6.texture;   
+        this.globalTexture[8] = PIXI.loader.resources.player7.texture;   
+        this.globalTexture[9] = PIXI.loader.resources.player8.texture;   
+        this.globalTexture[10] = PIXI.loader.resources.player9.texture; 
+
+      
+        this.animation = new PIXI.extras.AnimatedSprite(this.initFrames(this.current, this.map.getWaterLevel(this.x, this.y, this.z)));
         this.animation.animationSpeed = 0.2;
        
         this.setPosition(0, 0, 1);
@@ -57,21 +70,23 @@ class Player
     {
         if(direction < 0 || direction >= 4) return;
         this.current = direction;
+
+        let l1 = this.map.getWaterLevel(this.x, this.y, this.z);
+        let l2 = this.map.getWaterLevel(this.gotoX, this.gotoY, this.gotoZ);
        
         if(this.animation.playing)
         {
             this.animation.stop();      
-            this.animation.textures = this.initFrames(this.current);
+            this.animation.textures = this.initFrames(this.current, l1 < l2 ? l1 : l2);
             this.animation.play();
         }
         else
-            this.animation.textures = this.initFrames(this.current);
+            this.animation.textures = this.initFrames(this.current,  l1 < l2 ? l1 : l2);
     }
 
-    setSize(width, height)
+    setMap(map)
     {
-        this.width  = width;
-        this.height = height;
+        this.map = map;
     }
    
     setPosition(x, y, z)
@@ -79,6 +94,10 @@ class Player
         this.x = x;
         this.y = y;
         this.z = z;
+
+        this.gotoX = x;
+        this.gotoY = y;
+        this.gotoZ = z;
        
         let pos = iso2Cartesian(x, y, z);
 
@@ -90,7 +109,7 @@ class Player
         this.animation.anchor.set(0.5);
         this.animation.x = pos.x;
         this.animation.y = pos.y;
-        this.animation.zIndex = this.z * this.width * this.height + this.x + this.y * this.width;
+        this.animation.zIndex = this.z * this.map.width * this.map.height + this.x + this.y * this.map.width;
         this.animation.gotoAndStop(0);
        
        
@@ -150,7 +169,10 @@ class Player
                 y: (cible.y - this.currentY) / this.speed,
                 cpt: 0
             }
-           
+
+            this.animation.textures = this.initFrames(this.current, this.map.getWaterLevel(this.gotoX, this.gotoY, this.gotoZ));
+
+            console.log(this.map.getWaterLevel(this.gotoX, this.gotoY, this.gotoZ));
            
             this.animation.play();
                        
@@ -164,6 +186,7 @@ class Player
             {
                 this.moving = false;
                 this.setPosition(this.gotoX, this.gotoY, this.gotoZ);
+                this.setDirection(this.current);
             }
             else
             {
@@ -172,10 +195,8 @@ class Player
                
                 this.animation.x = Math.round(this.currentX);
                 this.animation.y = Math.round(this.currentY);
-                let z1 = this.gotoZ * this.width * this.height + this.gotoX + this.gotoY * this.width + 0.1;
-                let z2 = this.z * this.width * this.height + this.x + this.y * this.width + 0.1;
-
-                console.log(z1, z2);
+                let z1 = this.gotoZ * this.map.width * this.map.height + this.gotoX + this.gotoY * this.map.width + 0.1;
+                let z2 = this.z * this.map.width * this.map.height + this.x + this.y * this.map.width + 0.1;
 
                 this.animation.zIndex = z1 > z2 ? z1 : z2;
                

@@ -34,4 +34,9 @@ class Map
         for(let i = 0; i < this.layers.length; ++i)
             this.layers[i].addToStage(stage);
     }
+
+    getWaterLevel(x, y, z)
+    {
+        return this.layers[z].getWaterLevel(x, y);
+    }
 }
