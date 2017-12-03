@@ -68,7 +68,7 @@
             let app = new PIXI.Application(screenWidth, screenHeight, {backgroundColor : 'black'});
             document.body.appendChild(app.view);
             
-            let bg = new PIXI.Sprite(PIXI.loader.resources.background);
+            let bg = new PIXI.Sprite(PIXI.loader.resources.background.texture);
             app.stage.addChild(bg);
     
             app.ticker.add(update);
