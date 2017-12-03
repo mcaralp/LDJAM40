@@ -100,7 +100,7 @@ class Layer
                 this.sprites[i].anchor.set(0.5); 
                 this.sprites[i].x = pos.x;
                 this.sprites[i].y = pos.y;                
-                this.sprites[i].zIndex = this.level;
+                this.sprites[i].zIndex = this.level * this.width * this.height + x + y * this.width;
 
                 
                 
@@ -118,7 +118,7 @@ class Layer
                 //this.water[i].alpha = 0.5;
                 this.water[i].x = posWater.x;
                 this.water[i].y = posWater.y;  
-                this.water[i].zIndex = this.level ; 
+                this.water[i].zIndex = this.level * this.width * this.height + x + y * this.width;
 
                 stage.addChild(this.water[i]);        
             }

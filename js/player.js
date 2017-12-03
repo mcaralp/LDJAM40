@@ -67,6 +67,12 @@ class Player
         else
             this.animation.textures = this.initFrames(this.current);
     }
+
+    setSize(width, height)
+    {
+        this.width  = width;
+        this.height = height;
+    }
    
     setPosition(x, y, z)
     {
@@ -84,7 +90,7 @@ class Player
         this.animation.anchor.set(0.5);
         this.animation.x = pos.x;
         this.animation.y = pos.y;
-        this.animation.zIndex = this.z;
+        this.animation.zIndex = this.z * this.width * this.height + this.x + this.y * this.width;
         this.animation.gotoAndStop(0);
        
        
@@ -166,7 +172,12 @@ class Player
                
                 this.animation.x = Math.round(this.currentX);
                 this.animation.y = Math.round(this.currentY);
-                this.animation.zIndex = this.currentZ;
+                let z1 = this.gotoZ * this.width * this.height + this.gotoX + this.gotoY * this.width + 0.1;
+                let z2 = this.z * this.width * this.height + this.x + this.y * this.width + 0.1;
+
+                console.log(z1, z2);
+
+                this.animation.zIndex = z1 > z2 ? z1 : z2;
                
             }
         }
