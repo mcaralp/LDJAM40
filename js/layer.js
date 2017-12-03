@@ -8,7 +8,6 @@ class Layer
         this.matrix = [];
         this.transparent = false;
         this.top = top;
-        this.containers = new Array(this.width * this.height);
         this.sprites = new Array(this.width * this.height);
         this.water   = new Array(this.width * this.height);
        
@@ -22,6 +21,22 @@ class Layer
                
         this.blocks = new Blocks();            
        
+    }
+
+    static emptyLayer(width, height, level, top)
+    {
+        let matrix = [];
+
+        for(let i = 0; i < height; ++i)
+        {
+            let line = [];
+            for(let j = 0; j < width; ++j)
+                line.push('0');
+
+            matrix.push(line);
+        }
+
+        return new Layer(matrix, level, top);
     }
 
     isPassable(x, y)
@@ -70,37 +85,44 @@ class Layer
         let y = 0;
        
         for(let i = 0; i < this.width*this.height; ++i)
-        {           
+        {    
+            let block = this.matrix[y][x];       
             if(this.isBlock(x,y))
             {
-                let block = this.matrix[y][x];
-                let color = this.blocks.getColor(block);
+                
+                let color = this.blocks.getColor(block);                
 
-                this.containers[i] = new PIXI.Container();
-
-                let shape = this.computeShape(x, y);
-               
-                this.sprites[i] = new PIXI.Sprite(this.blocks.getBlock(block, shape.top, shape.left, shape.right));
-               
-                this.sprites[i].width  = cubeWidth;
-                this.sprites[i].height = cubeHeight;
-                this.containers[i].width  = cubeWidth;
-                this.containers[i].height = cubeHeight;
-
-                this.sprites[i].tint = color
-                this.sprites[i].anchor.set(0.5);
-                this.containers[i].zIndex = this.level;
-                               
+                let shape = this.computeShape(x, y);        
                 let pos = iso2Cartesian(x, y, this.level);
-                             
-                this.containers[i].x = pos.x;
-                this.containers[i].y = pos.y;
 
-                this.containers[i].addChild(this.sprites[i]);
-                stage.addChild(this.containers[i]);
+                this.sprites[i] = new PIXI.Sprite(this.blocks.getBlock(block, shape.top, shape.left, shape.right));
+                this.sprites[i].tint = color
+                this.sprites[i].anchor.set(0.5); 
+                this.sprites[i].x = pos.x;
+                this.sprites[i].y = pos.y;                
+                this.sprites[i].zIndex = this.level;
 
+                
+                
+                stage.addChild(this.sprites[i]);
+                //
 
             }
+            if(this.blocks.isWater(block) && this.level == 1)
+            {
+                let posWater = iso2Cartesian(x, y, this.level);
+                let shape = this.computeShape(x, y); 
+
+                this.water[i] = new PIXI.Sprite(this.blocks.getWater(block, shape.top, shape.left, shape.right, 3));
+                this.water[i].anchor.set(0.5);
+                //this.water[i].alpha = 0.5;
+                this.water[i].x = posWater.x;
+                this.water[i].y = posWater.y;  
+                this.water[i].zIndex = this.level ; 
+
+                stage.addChild(this.water[i]);        
+            }
+
            
             if(++x == this.width)
             {
@@ -119,7 +141,7 @@ class Layer
         let alpha = 0;
         if(currentLayer < this.level)  
         {
-            alpha = 0.5;
+            alpha = 0.8;
             this.transparent = true;
         } 
         else

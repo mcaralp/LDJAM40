@@ -6,10 +6,15 @@ function loadAll(callback)
 {
     PIXI.loader
         .add('cube', 'images/bloc56Sheet.png')
-        .add('stairsLT', 'images/stairs56_3_1.png')
-        .add('stairsRT', 'images/stairs56_3_2.png')
-        .add('stairsLB', 'images/stairs56_3_3.png')
-        .add('stairsRB', 'images/stairs56_3_4.png')
+        .add('stairsLT', 'images/StairsSheet1.png')
+        .add('stairsRT', 'images/StairsSheet2.png')
+        .add('stairsLB', 'images/StairsSheet3.png')
+        .add('stairsRB', 'images/StairsSheet4.png')
+        .add('cubeWater', 'images/WaterSheet.png')
+        .add('stairsLTWater', 'images/WaterStairs1Sheet.png')
+        .add('stairsRTWater', 'images/WaterStairs2Sheet.png')
+        .add('stairsLBWater', 'images/WaterStairs3Sheet.png')
+        .add('stairsRBWater', 'images/WaterStairs4Sheet.png')
         .add('player',  'images/player.png');
    
     for(var map in mapsList)

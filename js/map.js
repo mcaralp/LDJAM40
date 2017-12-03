@@ -5,6 +5,8 @@ class Map
         this.width = data.width;
         this.height = data.height;
         this.layers = [];
+
+        this.layers.push(Layer.emptyLayer(this.width, this.height, data.layers.length, undefined));
        
         for(let i = data.layers.length; i--;)
             this.layers.unshift(new Layer(data.layers[i], i, this.layers[0]));
