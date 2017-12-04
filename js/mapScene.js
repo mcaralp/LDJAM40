@@ -183,7 +183,7 @@ class MapScene
                 let oldZ = this.player.z;
                 if(this.player.move(this.lastMovement, this.map))
                 {
-                    this.map.updateWater(placable);
+                    this.map.updateWater(placable + winned);
 
                 }
                 if(this.action)
