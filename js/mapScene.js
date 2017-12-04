@@ -1,16 +1,16 @@
 
 class MapScene
 {
-	constructor(id)
-	{
-		this.lastMovement = 0;
+    constructor(id)
+    {
+        this.lastMovement = 0;
         this.action = false;
 
-		this.bg = new PIXI.Sprite(PIXI.loader.resources.background.texture);
+        this.bg = new PIXI.Sprite(PIXI.loader.resources.background.texture);
 
-		this.title = new PIXI.Sprite(PIXI.loader.resources['level' + id].texture);
-		this.gameOver = new PIXI.Sprite(PIXI.loader.resources.gameOver.texture);
-		this.victory = new PIXI.Sprite(PIXI.loader.resources.victory.texture);
+        this.title = new PIXI.Sprite(PIXI.loader.resources['level' + id].texture);
+        this.gameOver = new PIXI.Sprite(PIXI.loader.resources.gameOver.texture);
+        this.victory = new PIXI.Sprite(PIXI.loader.resources.victory.texture);
         
         this.map = ressources["map" + id];
         this.orbs = [];
@@ -60,13 +60,13 @@ class MapScene
         this.state = this.states.begin;
 
         this.updateZ();
-	}
+    }
 
-	reset()
-	{
-		this.map.reset();
-		this.player.reset(this.map);
-		for(let i = 0; i < this.orbs.length; ++i)
+    reset()
+    {
+        this.map.reset();
+        this.player.reset(this.map);
+        for(let i = 0; i < this.orbs.length; ++i)
             this.orbs[i].reset(this.map);
 
         this.updateZ();
@@ -75,11 +75,11 @@ class MapScene
         this.action = false;
         this.lastMovement = 0;
 
-	}
+    }
 
-	updateZ()
-	{
-		this.map.updateLayers(this.player.z);
+    updateZ()
+    {
+        this.map.updateLayers(this.player.z);
 
         let pos = this.player.getPosition();
 
@@ -87,168 +87,168 @@ class MapScene
         this.container.y = ((screenHeight / 2) - pos.y); 
 
         this.container.children.sort(MapScene.sortBlocks);
-	}
+    }
 
-	static sortBlocks(a, b)  
-	{
-		if(a.zIndex < b.zIndex) return -1;
-		if(a.zIndex > b.zIndex) return 1;
+    static sortBlocks(a, b)  
+    {
+        if(a.zIndex < b.zIndex) return -1;
+        if(a.zIndex > b.zIndex) return 1;
 
 
-		return 0;
-	}
+        return 0;
+    }
 
-	start(stage)
-	{
-	    stage.addChild(this.bg);
-		stage.addChild(this.container);
+    start(stage)
+    {
+        stage.addChild(this.bg);
+        stage.addChild(this.container);
 
-		stage.addChild(this.head);
-		stage.addChild(this.chest);
-		stage.addChild(this.orbsHead);
-		stage.addChild(this.orbsChest);
-		stage.addChild(this.title);
-		stage.addChild(this.gameOver);
-		stage.addChild(this.victory);
-	}
+        stage.addChild(this.head);
+        stage.addChild(this.chest);
+        stage.addChild(this.orbsHead);
+        stage.addChild(this.orbsChest);
+        stage.addChild(this.title);
+        stage.addChild(this.gameOver);
+        stage.addChild(this.victory);
+    }
 
-	stop(stage)
-	{
+    stop(stage)
+    {
 
         stage.removeChild(this.bg);
-		stage.removeChild(this.container);
+        stage.removeChild(this.container);
 
-		stage.removeChild(this.head);
-		stage.removeChild(this.chest);
-		stage.removeChild(this.orbsHead);
-		stage.removeChild(this.orbsChest);
-		stage.removeChild(this.title);
-		stage.removeChild(this.gameOver);
-		stage.removeChild(this.victory);
+        stage.removeChild(this.head);
+        stage.removeChild(this.chest);
+        stage.removeChild(this.orbsHead);
+        stage.removeChild(this.orbsChest);
+        stage.removeChild(this.title);
+        stage.removeChild(this.gameOver);
+        stage.removeChild(this.victory);
 
-		this.reset();
-	}
+        this.reset();
+    }
 
-	update()
-	{
-		switch(this.state)
-		{
-			case this.states.begin:
-				this.title.visible = true;
-				this.gameOver.visible = false;
-				this.victory.visible = false;
+    update()
+    {
+        switch(this.state)
+        {
+            case this.states.begin:
+                this.title.visible = true;
+                this.gameOver.visible = false;
+                this.victory.visible = false;
 
-				if(this.action)
-				{
-					this.state = this.states.play;
-				}
-				break;
+                if(this.action)
+                {
+                    this.state = this.states.play;
+                }
+                break;
 
-			case this.states.play:
-				this.title.visible = false;
-				this.gameOver.visible = false;
-				this.victory.visible = false;
+            case this.states.play:
+                this.title.visible = false;
+                this.gameOver.visible = false;
+                this.victory.visible = false;
 
-				let oldZ = this.player.z;
-		        if(this.player.move(this.lastMovement, this.map))
-		        {
-		            // TODO: update water
+                let oldZ = this.player.z;
+                if(this.player.move(this.lastMovement, this.map))
+                {
+                    // TODO: update water
 
-		        }
-		        if(this.action)
-            		this.player.action(); 
+                }
+                if(this.action)
+                    this.player.action(); 
 
-            	this.updateZ();
+                this.updateZ();
 
-		        let winned = 0;
-		        let placable = 0;
+                let winned = 0;
+                let placable = 0;
 
-		        for(let i = 0; i < this.orbs.length; ++i)
-		        {
-		            if(this.orbs[i].isDrowned())
-		                this.orbs[i].goTo(this.orbs[i].states.destroyed);
+                for(let i = 0; i < this.orbs.length; ++i)
+                {
+                    if(this.orbs[i].isDrowned())
+                        this.orbs[i].goTo(this.orbs[i].states.destroyed);
 
-		            if(this.orbs[i].isWinned())
-		                ++winned;
+                    if(this.orbs[i].isWinned())
+                        ++winned;
 
-		            if(this.orbs[i].isPlacable())
-		                ++placable;
-		        }
+                    if(this.orbs[i].isPlacable())
+                        ++placable;
+                }
 
-		        this.orbsHead.gotoAndStop(placable);
-		        this.orbsChest.gotoAndStop(winned);
+                this.orbsHead.gotoAndStop(placable);
+                this.orbsChest.gotoAndStop(winned);
 
-		        if(winned == this.orbs.length)
-		        {
-		        	this.state = this.states.victory;
-		            // TODO: end of level
-		        }
+                if(winned == this.orbs.length)
+                {
+                    this.state = this.states.victory;
+                    // TODO: end of level
+                }
 
-		        if(this.player.isDrowned())
-		        {
-		            this.state = this.states.end;
-		        }
+                if(this.player.isDrowned())
+                {
+                    this.state = this.states.end;
+                }
 
-		        this.action = false;
-		        break;
+                this.action = false;
+                break;
 
-		    case this.states.end:
+            case this.states.end:
 
-		    	this.title.visible = false;
-		    	this.gameOver.visible = false;
-		    	this.victory.visible = false;
+                this.title.visible = false;
+                this.gameOver.visible = false;
+                this.victory.visible = false;
 
-				if(this.player.playDead())
-				{
-					this.gameOver.visible = true;
-					if(this.action)
-						this.reset();
-					
-				}
+                if(this.player.playDead())
+                {
+                    this.gameOver.visible = true;
+                    if(this.action)
+                        this.reset();
+                    
+                }
 
-				this.action = false;
-				break;
+                this.action = false;
+                break;
 
-			case this.states.victory:
+            case this.states.victory:
 
-				this.title.visible = false;
-		    	this.gameOver.visible = false;
-		    	this.victory.visible = true;
+                this.title.visible = false;
+                this.gameOver.visible = false;
+                this.victory.visible = true;
 
-		    	if(this.action)
-				{
-					return true;
-				}
+                if(this.action)
+                {
+                    return true;
+                }
 
-		    	this.action = false;
-				break;
-				
-		}
+                this.action = false;
+                break;
+                
+        }
 
 
         return false;
-	}
+    }
 
-	keyPressed(event)
-	{
-		
-		if(event.keyCode >= 37 && event.keyCode <= 40)
+    keyPressed(event)
+    {
+        
+        if(event.keyCode >= 37 && event.keyCode <= 40)
             this.lastMovement = event.keyCode;
 
         if(event.keyCode == 32)
-            this.action = true;		
+            this.action = true;     
 
         return false;
-	}
+    }
 
-	keyReleased(event)
-	{
-		if(event.keyCode == this.lastMovement)
+    keyReleased(event)
+    {
+        if(event.keyCode == this.lastMovement)
             this.lastMovement = 0;
 
         return false;
         
-	}
+    }
 
 
 
