@@ -7,6 +7,7 @@ class Game
         this.scenes = []; 
 
         this.scenes.push(new Title());
+        this.scenes.push(new MapScene(0));
         this.scenes.push(new MapScene(1));
         this.scenes.push(new Complete());
 
