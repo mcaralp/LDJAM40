@@ -10,6 +10,7 @@ class MapScene
 
 		this.title = new PIXI.Sprite(PIXI.loader.resources['level' + id].texture);
 		this.gameOver = new PIXI.Sprite(PIXI.loader.resources.gameOver.texture);
+		this.victory = new PIXI.Sprite(PIXI.loader.resources.victory.texture);
         
         this.map = ressources["map" + id];
         this.orbs = [];
@@ -108,6 +109,7 @@ class MapScene
 		stage.addChild(this.orbsChest);
 		stage.addChild(this.title);
 		stage.addChild(this.gameOver);
+		stage.addChild(this.victory);
 	}
 
 	stop(stage)
@@ -122,6 +124,7 @@ class MapScene
 		stage.removeChild(this.orbsChest);
 		stage.removeChild(this.title);
 		stage.removeChild(this.gameOver);
+		stage.removeChild(this.victory);
 
 		this.reset();
 	}
@@ -133,6 +136,7 @@ class MapScene
 			case this.states.begin:
 				this.title.visible = true;
 				this.gameOver.visible = false;
+				this.victory.visible = false;
 
 				if(this.action)
 				{
@@ -143,6 +147,7 @@ class MapScene
 			case this.states.play:
 				this.title.visible = false;
 				this.gameOver.visible = false;
+				this.victory.visible = false;
 
 				let oldZ = this.player.z;
 		        if(this.player.move(this.lastMovement, this.map))
@@ -191,6 +196,8 @@ class MapScene
 
 		    	this.title.visible = false;
 		    	this.gameOver.visible = false;
+		    	this.victory.visible = false;
+
 				if(this.player.playDead())
 				{
 					this.gameOver.visible = true;
@@ -206,6 +213,7 @@ class MapScene
 
 				this.title.visible = false;
 		    	this.gameOver.visible = false;
+		    	this.victory.visible = true;
 
 		    	if(this.action)
 				{

@@ -8,7 +8,7 @@ class Game
 
         this.scenes.push(new Title());
         this.scenes.push(new MapScene(1));
-
+        this.scenes.push(new Complete());
 
         this.currentScene = 0;
     }

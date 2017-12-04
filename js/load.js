@@ -42,7 +42,9 @@ function loadAll(callback)
         .add('level0', 'images/Level1.png')
         .add('level1', 'images/Level2.png')
         .add('level2', 'images/Level3.png')
-        .add('gameOver', 'images/GameOver.png')
+        .add('gameOver', 'images/GameOver.png')        
+        .add('complete', 'images/Complete.png')
+        .add('victory', 'images/VictoryColored.png')
         .add('title', 'images/title.png');
    
     for(var map in mapsList)
