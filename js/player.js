@@ -225,14 +225,16 @@ class Player
         this.animation.anchor.set(0.5);
         this.animation.x = pos.x;
         this.animation.y = pos.y;
-        this.animation.zIndex = this.z * this.map.width * this.map.height + this.x + this.y * this.map.width;
+        this.animation.zIndex = this.z * this.map.width * this.map.length + this.x + this.y * this.map.width + 0.1;
         this.animation.gotoAndStop(0);
        
         this.animationBase.anchor.set(0.5);
         this.animationBase.x = pos.x;
         this.animationBase.y = pos.y;
-        this.animationBase.zIndex = this.z * this.map.width * this.map.height + this.x + this.y * this.map.width - 0.1;
+        this.animationBase.zIndex = this.z * this.map.width * this.map.length + this.x + this.y * this.map.width - 0.1;
         this.animationBase.gotoAndStop(0);
+
+        console.log(this.z, this.map.width, this.map.length, this.x, this.y);
     }
    
     move(movement, map)
@@ -311,6 +313,7 @@ class Player
                 this.setPosition(this.gotoX, this.gotoY, this.gotoZ);
                 this.setDirection(this.current);
 
+                console.log(this.animation.zIndex);
                 return true;
             }
             else
@@ -322,12 +325,13 @@ class Player
                 this.animation.y = Math.round(this.currentY);
                 this.animationBase.x = Math.round(this.currentX);
                 this.animationBase.y = Math.round(this.currentY);
-                let z1 = this.gotoZ * this.map.width * this.map.height + this.gotoX + this.gotoY * this.map.width;
-                let z2 = this.z * this.map.width * this.map.height + this.x + this.y * this.map.width;
+                let z1 = this.gotoZ * this.map.width * this.map.length + this.gotoX + this.gotoY * this.map.width;
+                let z2 = this.z * this.map.width * this.map.length + this.x + this.y * this.map.width;
 
                 this.animation.zIndex = (z1 > z2 ? z1 : z2) + 0.1;
                 this.animationBase.zIndex = (z1 < z2 ? z1 : z2) - 0.1;
-               
+
+
             }
         }
 

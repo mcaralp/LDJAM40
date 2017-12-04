@@ -70,7 +70,7 @@ class Orb
         this.animation.anchor.set(0.5);
         this.animation.x = pos.x;
         this.animation.y = pos.y;
-        this.animation.zIndex = this.z * this.map.width * this.map.height + this.x + this.y * this.map.width + 0.1;
+        this.animation.zIndex = this.z * this.map.width * this.map.length + this.x + this.y * this.map.width + 0.1;
     }
 
     goTo(state, x, y, z)

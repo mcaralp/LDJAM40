@@ -12,11 +12,13 @@ class Layer
         this.water   = new Array(this.width * this.height);
         this.waterLevel = new Array(this.width * this.height);
 
-        this.waterLevel.fill(level == 1? 8 : 0);
+        this.waterLevel.fill(0);
    
         this.blocks = new Blocks();  
 
         this.initSprites();
+
+        console.log(this.width, this.height);
        
     }
 
@@ -138,13 +140,16 @@ class Layer
                 let shape = this.computeShape(x, y);        
                 let pos = iso2Cartesian(x, y, this.level);
 
-                this.sprites[i] = new PIXI.Sprite(this.blocks.getBlock(block, shape.top, shape.left, shape.right));
+                this.sprites[i] = new PIXI.Sprite(this.blocks.getBlock(block, 1, 1, 1));
                 if(!this.blocks.isChest(block))
                     this.sprites[i].tint = color
                 this.sprites[i].anchor.set(0.5); 
                 this.sprites[i].x = pos.x;
                 this.sprites[i].y = pos.y;                
                 this.sprites[i].zIndex = this.level * this.width * this.height + x + y * this.width;
+
+                if(this.level == 2)
+                    console.log(this.sprites[i].zIndex,  x, y, block);
 
             }
             if(this.blocks.isWater(block))
@@ -197,7 +202,9 @@ class Layer
 
                 let shape = this.computeShape(x, y);
                
-                this.sprites[i].texture = this.blocks.getBlock(block, shape.top, shape.left, shape.right);
+                    this.sprites[i].texture = this.blocks.getBlock(block, shape.top, shape.left, shape.right);
+                //else
+                    //this.sprites[i].texture = this.blocks.getBlock(block, 1, 1, 1);
             }
 
             if(this.blocks.isWater(block))

@@ -4,6 +4,7 @@ class Map
     {
         this.width = data.width;
         this.height = data.height;
+        this.length = data.length;
         this.layers = [];
 
         this.orbs = data.orbs;
