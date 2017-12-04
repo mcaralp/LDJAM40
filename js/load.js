@@ -1,5 +1,5 @@
 
-var mapsList = ["map0","map1"];
+var mapsList = ["map0","map1","map2"];
 var ressources = {};
 
 const screenWidth  = 800;
