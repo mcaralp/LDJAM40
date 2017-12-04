@@ -185,7 +185,7 @@ class Layer
                 this.water[i].alpha = 0.5;
                 this.water[i].x = posWater.x;
                 this.water[i].y = posWater.y;  
-                this.water[i].zIndex = this.level * this.width * this.height + x + y * this.width + 0.05;
+                this.water[i].zIndex = this.level * this.width * this.height + x + y * this.width;
             }
 
            
@@ -225,7 +225,7 @@ class Layer
 
                 let shape = this.computeShape(x, y);
                
-                    this.sprites[i].texture = this.blocks.getBlock(block, shape.top, shape.left, shape.right);
+                    this.sprites[i].texture = this.blocks.getBlock(block, shape.top, shape.left, shape.right) - 0.01;
                 //else
                     //this.sprites[i].texture = this.blocks.getBlock(block, 1, 1, 1);
             }
