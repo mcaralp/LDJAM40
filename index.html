@@ -2,7 +2,7 @@
 <html>
 <head>
     <meta charset="utf-8">
-    <title>La péninsule la plus à l'est, C'est ça le secret! (plus ou moins)</title>
+    <title>LOST ORBS</title>
 
 </head>
     <script src="js/pixi.min.js"></script>
@@ -14,26 +14,20 @@
     <script src="js/orb.js"></script>
     <script src="js/map.js"></script>
     <script src="js/mapScene.js"></script>
+    <script src="js/title.js"></script>
+    <script src="js/game.js"></script>
 <body>
     <script type="text/javascript">
+
+
         
        
 
         function start()
-        {            
+        {  
 
-
-            //Create the renderer
-            let app = new PIXI.Application(screenWidth, screenHeight, {backgroundColor : 'black'});
-            
-
-            document.body.appendChild(app.view);
-
-            let scene = new MapScene(1);
-
-            scene.start(app);
-            
-            
+            let game = new Game();
+            game.start();
   
         }
         

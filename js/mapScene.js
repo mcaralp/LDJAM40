@@ -45,35 +45,17 @@ class MapScene
 		return 0;
 	}
 
-	start(app)
+	start(stage)
 	{
-		this.bindedUpdate      = this.update.bind(this);
-		this.bindedKeyPressed  = this.keyPressed.bind(this);
-		this.bindedKeyReleased = this.keyReleased.bind(this);
-
-		app.ticker.add(this.bindedUpdate);
-
-		document.addEventListener("keydown", this.bindedKeyPressed);
-        document.addEventListener("keyup", this.bindedKeyReleased);
-
-        app.stage.addChild(this.bg);
-		app.stage.addChild(this.container);
-
-		this.reset();
-
-		this.app = app;
-            
+	    stage.addChild(this.bg);
+		stage.addChild(this.container);
 	}
 
-	stop(app)
+	stop(stage)
 	{
-		app.ticker.remove(this.bindedUpdate);
 
-		document.removeEventListener("keydown", this.bindedKeyPressed);
-        document.removeEventListener("keyup", this.bindedKeyReleased);
-
-        app.stage.removeChild(this.bg);
-		app.stage.removeChild(this.container);
+        stage.removeChild(this.bg);
+		stage.removeChild(this.container);
 
 		this.reset();
 	}
@@ -121,6 +103,8 @@ class MapScene
             this.player.action();        
 
         this.action = false;
+
+        return false;
 	}
 
 	keyPressed(event)
@@ -131,12 +115,16 @@ class MapScene
 
         if(event.keyCode == 32)
             this.action = true;
+
+        return false;
 	}
 
 	keyReleased(event)
 	{
 		if(event.keyCode == this.lastMovement)
             this.lastMovement = 0;
+
+        return false;
         
 	}
 

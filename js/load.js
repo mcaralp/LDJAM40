@@ -33,7 +33,9 @@ function loadAll(callback)
         .add('grid', 'images/GridSheet.png')
         .add('orb', 'images/OrbSheet.png')
         .add('background', 'images/Background.png')
-        .add('altarWater', 'images/WaterHotelSheet.png');
+        .add('altarWater', 'images/WaterHotelSheet.png')
+        .add('intro', 'images/IntroText.png')
+        .add('title', 'images/title.png');
    
     for(var map in mapsList)
         PIXI.loader.add(mapsList[map],'maps/'+mapsList[map]+'.json');
