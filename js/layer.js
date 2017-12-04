@@ -1,6 +1,6 @@
 class Layer
 {
-    constructor(data, level, top)
+    constructor(data, waterStart, waterFill, level, top)
     {
         this.width = data[0].length;
         this.height = data.length;
@@ -11,6 +11,12 @@ class Layer
         this.sprites = new Array(this.width * this.height);
         this.water   = new Array(this.width * this.height);
         this.waterLevel = new Array(this.width * this.height);
+
+        this.waterStart = waterStart;
+        this.waterFill = waterFill;
+
+        this.cpt = 0;
+
 
         this.waterLevel.fill(0);
    
@@ -35,12 +41,13 @@ class Layer
             matrix.push(line);
         }
 
-        return new Layer(matrix, level, top);
+        return new Layer(matrix, matrix, matrix, level, top);
     }
 
     reset()
     {
         this.waterLevel.fill(0);
+        this.cpt = 0;
     }
 
     isAltar(x, y)
@@ -88,6 +95,22 @@ class Layer
     {
         if(this.top === undefined) return 0;
         return this.top.getWaterLevel(x, y);
+    }
+
+    setTopWaterLevel(x, y, water)
+    {
+        if(this.top === undefined) return 0;
+        return this.top.getWaterLevel(x, y, water);
+    }
+
+    setWaterLevel(x, y, water)
+    {
+        if(x >= this.width || x < 0 || y >= this.height || y < 0) return;
+        let block = this.matrix[y][x];       
+        if(!this.blocks.isWater(block)) return;
+
+        this.waterLevel[x + y * this.width] = water;
+
     }
    
     isBlock(x, y)
@@ -183,7 +206,7 @@ class Layer
         let alpha = 0;
         if(currentLayer < this.level)  
         {
-            alpha = 0.8;
+            alpha = 0.6;
             this.transparent = true;
         } 
         else
@@ -220,6 +243,40 @@ class Layer
                 y++;
             }
         }
+    }
+
+    updateWater(speed)
+    {
+        let x = 0;
+        let y = 0;
+
+        this.cpt += speed;
+
+        for(let i = 0; i < this.width*this.height; ++i)
+        {
+            let block = this.matrix[y][x];  
+            if(this.blocks.isWater(block))
+            {
+                if(this.waterFill[y][x] != 0 && this.cpt >= this.waterFill[y][x])
+                {
+                    this.waterLevel[i] = Math.min(12, this.cpt - this.waterFill[y][x] + 1);
+                }
+                else if(this.waterStart[y][x] != 0 && this.cpt >= this.waterStart[y][x])
+                {
+
+                    this.waterLevel[i] = 1;
+                }
+
+            }
+
+            if(++x == this.width)
+            {
+                x = 0;
+                y++;
+            }
+        }
+
+        
     }
    
     addToStage(stage)

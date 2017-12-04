@@ -13,7 +13,7 @@ class Map
         this.layers.push(Layer.emptyLayer(this.width, this.height, data.layers.length, undefined));
        
         for(let i = data.layers.length; i--;)
-            this.layers.unshift(new Layer(data.layers[i], i, this.layers[0]));
+            this.layers.unshift(new Layer(data.layers[i], data.waterStart[i], data.waterFill[i], i, this.layers[0]));
     }
 
     isPassable(x, y, z)
@@ -61,4 +61,11 @@ class Map
     {
         return this.layers[z].getWaterLevel(x, y);
     }
+
+    updateWater(speed)
+    {
+        for(let i = 0; i < this.layers.length; ++i)
+            this.layers[i].updateWater(speed);
+    }
+
 }
