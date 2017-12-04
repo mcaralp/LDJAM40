@@ -302,11 +302,6 @@ class Player
             this.moving = true;           
             this.setDirection(direction);
 
-            PIXI.loader.resources.stepWaterSound.data.pause();
-            PIXI.loader.resources.stepWaterSound.data.currentTime = 0;
-            PIXI.loader.resources.stepSound.data.pause();
-            PIXI.loader.resources.stepSound.data.currentTime = 0;
-
             if(map.getWaterLevel(this.x, this.y, this.z) > 0)
                 PIXI.loader.resources.stepWaterSound.data.play();
             else
