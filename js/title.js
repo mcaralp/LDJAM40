@@ -47,7 +47,6 @@ class Title
 
 		if(this.title)
 		{
-			console.log('hello');
 			this.introSprite.visible = true;
 			this.titleSprite.visible = false;
 			this.title = false;

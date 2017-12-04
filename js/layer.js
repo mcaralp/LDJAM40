@@ -139,7 +139,8 @@ class Layer
                 let pos = iso2Cartesian(x, y, this.level);
 
                 this.sprites[i] = new PIXI.Sprite(this.blocks.getBlock(block, shape.top, shape.left, shape.right));
-                this.sprites[i].tint = color
+                if(!this.blocks.isChest(block))
+                    this.sprites[i].tint = color
                 this.sprites[i].anchor.set(0.5); 
                 this.sprites[i].x = pos.x;
                 this.sprites[i].y = pos.y;                
