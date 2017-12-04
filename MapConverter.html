@@ -1,0 +1,117 @@
+<html>
+<head>
+<meta charset="utf-8">
+
+<style>
+
+</style>
+
+</head>
+
+<body>
+
+<input type="text" id="imageUrl">
+<button id="convertButton">Convert</button>
+<textarea id="jsonOutput"></textarea>
+
+<script>
+
+var color2Tile = {  };
+
+color2Tile["0 0 0"] = 0;
+color2Tile["255 0 0"] = 1;
+color2Tile["0 255 0"] = 2;
+color2Tile["0 0 255"] = 3;
+color2Tile["255 255 255"] = 4;
+
+var defaultTile = 0;
+
+
+function convert(imgData)
+{
+	TRUC = imgData;
+	console.log("Convert");
+	
+	var json = {matrix:[]};
+	var x = 0;
+	var y = 0;
+	var len = imgData.width * imgData.height;
+	
+	var row = [];
+	
+	for(var i=0;i<len;i++)
+	{
+		var b1 = imgData.data[i*4];
+		var b2 = imgData.data[i*4+1];
+		var b3 = imgData.data[i*4+2];
+		
+		var color = b1 + " "+ b2 + " " + b3;
+		var tile = color2Tile[color];
+		
+		if(tile == undefined)
+		{
+			color = defaultTile;
+			console.log("default!");
+		}
+		
+		row.push(tile);
+		
+		x++;
+		if(x >= imgData.width)
+		{
+			json.matrix.push(row);
+			row = [];
+			x = 0;
+			y++;
+		}
+	}
+	
+	document.getElementById("jsonOutput").value = JSON.stringify(json.matrix);
+}
+
+
+function loadNConvert(url)
+{
+	console.log("Loading "+url+"!");
+	
+	var myImage = document.createElement("img");
+	document.body.appendChild(myImage);
+	
+	myImage.onload =  imageLoaded.bind(undefined, myImage);
+	myImage.src = url;
+	
+}
+
+
+function imageLoaded(myImage)
+{
+	console.log("Loaded");
+	var w = myImage.width, h = myImage.height;
+
+	var canvas = document.createElement('canvas');
+
+	canvas.width = w;
+	canvas.height = h;
+
+	var ctx = canvas.getContext('2d');
+	ctx.drawImage(myImage, 0, 0);
+
+	var data = ctx.getImageData(0, 0, w, h);
+	
+	return convert(data);
+}
+
+document.getElementById("convertButton").onclick = function()
+{
+	console.log("Change");
+	loadNConvert(document.getElementById("imageUrl").value);
+}
+
+
+
+</script>
+
+
+</body>
+
+</html>
