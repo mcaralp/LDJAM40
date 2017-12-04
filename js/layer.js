@@ -169,7 +169,7 @@ class Layer
                 this.sprites[i].anchor.set(0.5); 
                 this.sprites[i].x = pos.x;
                 this.sprites[i].y = pos.y;                
-                this.sprites[i].zIndex = this.level * this.width * this.height + x + y * this.width;
+                this.sprites[i].zIndex = this.level * this.width * this.height + x + y * this.width - 0.01;
 
                 if(this.level == 2)
                     console.log(this.sprites[i].zIndex,  x, y, block);
