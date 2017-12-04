@@ -16,8 +16,8 @@ class Title
 
 	reset()
 	{
-		this.introSprite.visible = true;
-		this.titleSprite.visible = false;
+		this.introSprite.visible = false;
+		this.titleSprite.visible = true;
 		this.title = true;
 		this.delta = 0;
 	}

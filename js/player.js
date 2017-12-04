@@ -1,3 +1,4 @@
+
 class Player
 {
     constructor(map, orbs)
@@ -7,6 +8,8 @@ class Player
         this.speed = 20;
 
         this.orbs = orbs;
+
+        this.dead = false;
 
 
         this.initSprites(map.player.x, map.player.y, map.player.z);
@@ -23,6 +26,11 @@ class Player
         this.setPosition(this.map.player.x, this.map.player.y, this.map.player.z);
         this.setDirection(2);
         this.map.updateLayers(this.z);
+        this.dead = false;
+
+        this.animation.visible = true;
+        this.animation.animationSpeed = 0.2;
+        this.animationBase.loop = true;
     }
 
     getPosition()
@@ -36,6 +44,18 @@ class Player
         for(let j = 0; j < 4; ++j)
         {
            let frame = new PIXI.Texture(this.globalTexture[waterLevel > 10 ? 10 : waterLevel], new PIXI.Rectangle(direction * 72, j * 72, 72, 72));
+           anim.push(frame);
+        }
+       
+        return anim;
+    }
+
+    initDead(direction)
+    {
+        let anim = [];
+        for(let j = 0; j < 3; ++j)
+        {
+           let frame = new PIXI.Texture(this.globalTexture[11], new PIXI.Rectangle(direction * 72, j * 72, 72, 72));
            anim.push(frame);
         }
        
@@ -56,6 +76,7 @@ class Player
         this.globalTexture[8] = PIXI.loader.resources.player7.texture;   
         this.globalTexture[9] = PIXI.loader.resources.player8.texture;   
         this.globalTexture[10] = PIXI.loader.resources.player9.texture; 
+        this.globalTexture[11] = PIXI.loader.resources.playerDead.texture; 
 
       
         this.animation = new PIXI.extras.AnimatedSprite(this.initFrames(this.current, this.map.getWaterLevel(x, y, z)));
@@ -67,6 +88,28 @@ class Player
         this.setPosition(x, y, z);
         this.setDirection(2);
        
+    }
+
+    playDead()
+    {
+        if(!this.dead)
+        {
+            this.dead = true;
+            this.delta = 0;
+            this.animation.visible = false;
+            this.animationBase.stop();
+            this.animationBase.textures = this.initDead(this.current);
+            this.animationBase.animationSpeed = 0.05;
+            this.animationBase.loop = false;
+            this.animationBase.play();
+
+
+            return false;
+        }
+        else
+        {
+            return !this.animationBase.playing;
+        }
     }
 
     action()

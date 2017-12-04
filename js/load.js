@@ -39,6 +39,10 @@ function loadAll(callback)
         .add('display', 'images/Display.png')
         .add('orbCount', 'images/OrbCount.png')
         .add('chest', 'images/chestSheet.png')
+        .add('level0', 'images/Level1.png')
+        .add('level1', 'images/Level2.png')
+        .add('level2', 'images/Level3.png')
+        .add('gameOver', 'images/GameOver.png')
         .add('title', 'images/title.png');
    
     for(var map in mapsList)

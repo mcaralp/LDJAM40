@@ -12,7 +12,7 @@ class Layer
         this.water   = new Array(this.width * this.height);
         this.waterLevel = new Array(this.width * this.height);
 
-        this.waterLevel.fill(0);
+        this.waterLevel.fill(level == 1? 9 : 0);
    
         this.blocks = new Blocks();  
 
