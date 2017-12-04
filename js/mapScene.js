@@ -208,7 +208,6 @@ class MapScene
                     {
                         this.reset();
                         this.state = this.states.play;
-                        PIXI.loader.resources.bipSound.data.play();
                     }
                     
                 }
