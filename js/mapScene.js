@@ -76,6 +76,8 @@ class MapScene
         this.container.x = ((screenWidth / 2) - pos.x); 
         this.container.y = ((screenHeight / 2) - pos.y); 
 
+        
+
         this.container.children.sort(MapScene.sortBlocks);
 
         let winned = 0;
