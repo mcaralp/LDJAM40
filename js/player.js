@@ -20,6 +20,10 @@ class Player
 
     reset()
     {
+        this.animation.visible = true;
+        this.animationBase.animationSpeed = 0.2;
+        this.animationBase.loop = true;
+
         this.moving = false; 
         this.animation.stop();
         this.animationBase.stop();
@@ -28,9 +32,7 @@ class Player
         this.map.updateLayers(this.z);
         this.dead = false;
 
-        this.animation.visible = true;
-        this.animation.animationSpeed = 0.2;
-        this.animationBase.loop = true;
+
     }
 
     getPosition()
