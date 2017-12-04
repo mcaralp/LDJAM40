@@ -185,7 +185,7 @@ class Layer
                 this.water[i].alpha = 0.5;
                 this.water[i].x = posWater.x;
                 this.water[i].y = posWater.y;  
-                this.water[i].zIndex = this.level * this.width * this.height + x + y * this.width;
+                this.water[i].zIndex = this.level * this.width * this.height + x + y * this.width + 0.05;
             }
 
            
