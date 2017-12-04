@@ -233,8 +233,6 @@ class Player
         this.animationBase.y = pos.y;
         this.animationBase.zIndex = this.z * this.map.width * this.map.length + this.x + this.y * this.map.width - 0.1;
         this.animationBase.gotoAndStop(0);
-
-        console.log(this.z, this.map.width, this.map.length, this.x, this.y);
     }
    
     move(movement, map)
@@ -312,8 +310,6 @@ class Player
                 this.moving = false;
                 this.setPosition(this.gotoX, this.gotoY, this.gotoZ);
                 this.setDirection(this.current);
-
-                console.log(this.animation.zIndex);
                 return true;
             }
             else
@@ -335,7 +331,7 @@ class Player
             }
         }
 
-        return true;
+        return false;
     }
    
     addToStage(stage)

@@ -149,17 +149,6 @@ class MapScene
                 this.gameOver.visible = false;
                 this.victory.visible = false;
 
-                let oldZ = this.player.z;
-                if(this.player.move(this.lastMovement, this.map))
-                {
-                    // TODO: update water
-
-                }
-                if(this.action)
-                    this.player.action(); 
-
-                this.updateZ();
-
                 let winned = 0;
                 let placable = 0;
 
@@ -181,13 +170,24 @@ class MapScene
                 if(winned == this.orbs.length)
                 {
                     this.state = this.states.victory;
-                    // TODO: end of level
                 }
 
                 if(this.player.isDrowned())
                 {
                     this.state = this.states.end;
                 }
+
+                let oldZ = this.player.z;
+                if(this.player.move(this.lastMovement, this.map))
+                {
+                    this.map.updateWater(placable);
+
+                }
+                if(this.action)
+                    this.player.action(); 
+
+                this.updateZ();
+                
 
                 this.action = false;
                 break;
@@ -202,7 +202,10 @@ class MapScene
                 {
                     this.gameOver.visible = true;
                     if(this.action)
+                    {
                         this.reset();
+                        this.state = this.states.play;
+                    }
                     
                 }
 
