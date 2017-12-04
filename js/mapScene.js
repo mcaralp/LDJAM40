@@ -141,6 +141,7 @@ class MapScene
                 if(this.action)
                 {
                     this.state = this.states.play;
+                    PIXI.loader.resources.bipSound.data.play();
                 }
                 break;
 
@@ -169,11 +170,13 @@ class MapScene
 
                 if(winned == this.orbs.length)
                 {
+                    PIXI.loader.resources.victorySound.data.play();
                     this.state = this.states.victory;
                 }
 
                 if(this.player.isDrowned())
                 {
+                    PIXI.loader.resources.drownSound.data.play();
                     this.state = this.states.end;
                 }
 
@@ -205,6 +208,7 @@ class MapScene
                     {
                         this.reset();
                         this.state = this.states.play;
+                        PIXI.loader.resources.bipSound.data.play();
                     }
                     
                 }
@@ -220,6 +224,7 @@ class MapScene
 
                 if(this.action)
                 {
+                    PIXI.loader.resources.bipSound.data.play();
                     return true;
                 }
 

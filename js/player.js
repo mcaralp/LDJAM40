@@ -301,10 +301,24 @@ class Player
                        
             this.moving = true;           
             this.setDirection(direction);
+
+            PIXI.loader.resources.stepWaterSound.data.pause();
+            PIXI.loader.resources.stepWaterSound.data.currentTime = 0;
+            PIXI.loader.resources.stepSound.data.pause();
+            PIXI.loader.resources.stepSound.data.currentTime = 0;
+
+            if(map.getWaterLevel(this.x, this.y, this.z) > 0)
+                PIXI.loader.resources.stepWaterSound.data.play();
+            else
+                PIXI.loader.resources.stepSound.data.play();
+
         }
        
         if(this.moving)
         {
+            //if(this.movement.cpt == 10)
+              //  PIXI.loader.resources.stepSound.data.play();
+
             if(this.movement.cpt++ == this.speed)
             {
                 this.moving = false;
@@ -326,6 +340,8 @@ class Player
 
                 this.animation.zIndex = (z1 > z2 ? z1 : z2) + 0.1;
                 this.animationBase.zIndex = (z1 < z2 ? z1 : z2) - 0.1;
+
+                
 
 
             }

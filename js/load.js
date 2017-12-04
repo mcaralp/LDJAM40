@@ -45,7 +45,16 @@ function loadAll(callback)
         .add('gameOver', 'images/GameOver.png')        
         .add('complete', 'images/Complete.png')
         .add('victory', 'images/VictoryColored.png')
-        .add('title', 'images/title.png');
+        .add('title', 'images/title.png')
+
+        .add('bipSound', 'sounds/bip.wav')
+        .add('drownSound', 'sounds/drown.wav')
+        .add('orbSound', 'sounds/orb.wav')
+        .add('orb2Sound', 'sounds/orb2.wav')        
+        .add('orb3Sound', 'sounds/orb3.wav')
+        .add('stepWaterSound', 'sounds/stepWater.wav')
+        .add('stepSound', 'sounds/step.wav')
+        .add('victorySound', 'sounds/victory.wav');
    
     for(var map in mapsList)
         PIXI.loader.add(mapsList[map],'maps/'+mapsList[map]+'.json');
@@ -57,6 +66,15 @@ function initAll(callback,loader,resources)
 { 
     for(let map in mapsList)
         ressources[mapsList[map]] = new Map(resources[mapsList[map]].data);
+
+    PIXI.loader.resources.bipSound.load();
+    PIXI.loader.resources.drownSound.load();
+    PIXI.loader.resources.orbSound.load();
+    PIXI.loader.resources.orb2Sound.load(); 
+    PIXI.loader.resources.orb3Sound.load();
+    PIXI.loader.resources.stepWaterSound.load();
+    PIXI.loader.resources.stepSound.load();
+    PIXI.loader.resources.victorySound.load();
    
     callback();
 }

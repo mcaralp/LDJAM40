@@ -81,16 +81,19 @@ class Orb
                 this.state = this.states.ok;
                 this.setPosition(x, y, z);
                 this.animation.visible = 1;
+                PIXI.loader.resources.orb2Sound.data.play();
                 break;
 
             case this.states.pocket:
                 this.state = this.states.pocket;
                 this.animation.visible = 0;
+                PIXI.loader.resources.orbSound.data.play();
                 break;
 
             case this.states.chest:
                 this.state = this.states.chest;
                 this.animation.visible = 0;
+                PIXI.loader.resources.orb3Sound.data.play();
                 break;
 
             case this.states.destroyed:

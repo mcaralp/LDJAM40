@@ -44,7 +44,7 @@ class Title
 
     keyPressed()
     {
-
+        PIXI.loader.resources.bipSound.data.play();
         if(this.title)
         {
             this.introSprite.visible = true;

@@ -31,6 +31,7 @@ class Complete
 
     keyPressed()
     {
+        PIXI.loader.resources.bipSound.data.play();
         return true;
     }
 
