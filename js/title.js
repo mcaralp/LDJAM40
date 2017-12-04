@@ -6,12 +6,20 @@ class Title
         this.title = PIXI.loader.resources.title.texture;
         this.intro = PIXI.loader.resources.intro.texture;
 
-        this.titleSprite = new PIXI.Sprite(this.title);
+        this.titleTextures = [
+            new PIXI.Texture(this.title, new PIXI.Rectangle(0, 0, 800, 600)),
+            new PIXI.Texture(this.title, new PIXI.Rectangle(0, 600, 800, 600))
+        ]
+
+        this.titleSprite = new PIXI.extras.AnimatedSprite(this.titleTextures);
         this.introSprite = new PIXI.Sprite(this.intro);
 
         this.introSprite.visible = false;
         this.title = true;
         this.delta = 0;
+
+        this.titleSprite.animationSpeed = 0.03;
+        this.titleSprite.play();
     }
 
     reset()

@@ -45,7 +45,7 @@ function loadAll(callback)
         .add('gameOver', 'images/GameOver.png')        
         .add('complete', 'images/Complete.png')
         .add('victory', 'images/VictoryColored.png')
-        .add('title', 'images/title.png')
+        .add('title', 'images/AnimatedTitle.png')
 
         .add('bipSound', 'sounds/bip.wav')
         .add('drownSound', 'sounds/drown.wav')
