@@ -225,7 +225,7 @@ class Layer
 
                 let shape = this.computeShape(x, y);
                
-                    this.sprites[i].texture = this.blocks.getBlock(block, shape.top, shape.left, shape.right) - 0.01;
+                    this.sprites[i].texture = this.blocks.getBlock(block, shape.top, shape.left, shape.right);
                 //else
                     //this.sprites[i].texture = this.blocks.getBlock(block, 1, 1, 1);
             }
