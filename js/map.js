@@ -50,6 +50,12 @@ class Map
             this.layers[i].addToStage(stage);
     }
 
+    reset()
+    {
+        for(let i = 0; i < this.layers.length; ++i)
+            this.layers[i].reset();
+    }
+
     getWaterLevel(x, y, z)
     {
         return this.layers[z].getWaterLevel(x, y);

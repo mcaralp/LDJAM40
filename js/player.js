@@ -12,6 +12,17 @@ class Player
         this.initSprites(map.player.x, map.player.y, map.player.z);
         
         map.updateLayers(this.z);
+
+    }
+
+    reset()
+    {
+        this.moving = false; 
+        this.animation.stop();
+        this.animationBase.stop();
+        this.setPosition(this.map.player.x, this.map.player.y, this.map.player.z);
+        this.setDirection(2);
+        this.map.updateLayers(this.z);
     }
 
     getPosition()

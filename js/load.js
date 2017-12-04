@@ -2,6 +2,9 @@
 var mapsList = ["map0","map1","map2"];
 var ressources = {};
 
+const screenWidth  = 800;
+const screenHeight = 600;
+
 function loadAll(callback)
 {
     PIXI.loader
@@ -16,7 +19,7 @@ function loadAll(callback)
         .add('stairsLBWater', 'images/WaterStairs3Sheet.png')
         .add('stairsRBWater', 'images/WaterStairs4Sheet.png')
         .add('player',  'images/player.png')
-        .add('player0',  'images/player0.png')
+        .add('player0',  'images/Player0.png')
         .add('player1',  'images/Player1.png')
         .add('player2',  'images/Player2.png')
         .add('player3',  'images/Player3.png')

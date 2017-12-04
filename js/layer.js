@@ -36,6 +36,11 @@ class Layer
         return new Layer(matrix, level, top);
     }
 
+    reset()
+    {
+        this.waterLevel.fill(0);
+    }
+
     isAltar(x, y)
     {
         if(x >= this.width || x < 0 || y >= this.height || y < 0) return false;

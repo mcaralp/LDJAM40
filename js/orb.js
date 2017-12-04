@@ -6,12 +6,18 @@ class Orb
 		this.x = 0;
 		this.y = 0;
 		this.z = 0;
+		this.id = id;
 
 		this.states = {ok : 0, pocket: 1, chest: 2, destroyed: 3}
 
 		this.state = this.states.ok;
 
 		this.initSprite(this.map.orbs[id].x, this.map.orbs[id].y, this.map.orbs[id].z);
+	}
+
+	reset()
+	{
+		this.goTo(this.states.ok, this.map.orbs[this.id].x, this.map.orbs[this.id].y, this.map.orbs[this.id].z);
 	}
 
 	initSprite(x, y, z)
