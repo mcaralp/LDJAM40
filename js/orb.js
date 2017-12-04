@@ -55,7 +55,7 @@ class Orb
 
     isDrowned()
     {
-        return this.map.getWaterLevel(this.x, this.y, this.z) >= 9;
+        return this.state == this.states.ok && this.map.getWaterLevel(this.x, this.y, this.z) >= 9;
     }
 
 
