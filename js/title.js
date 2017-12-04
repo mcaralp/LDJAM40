@@ -1,64 +1,64 @@
 
 class Title
 {
-	constructor()
-	{
-		this.title = PIXI.loader.resources.title.texture;
-		this.intro = PIXI.loader.resources.intro.texture;
+    constructor()
+    {
+        this.title = PIXI.loader.resources.title.texture;
+        this.intro = PIXI.loader.resources.intro.texture;
 
-		this.titleSprite = new PIXI.Sprite(this.title);
-		this.introSprite = new PIXI.Sprite(this.intro);
+        this.titleSprite = new PIXI.Sprite(this.title);
+        this.introSprite = new PIXI.Sprite(this.intro);
 
-		this.introSprite.visible = false;
-		this.title = true;
-		this.delta = 0;
-	}
+        this.introSprite.visible = false;
+        this.title = true;
+        this.delta = 0;
+    }
 
-	reset()
-	{
-		this.introSprite.visible = false;
-		this.titleSprite.visible = true;
-		this.title = true;
-		this.delta = 0;
-	}
+    reset()
+    {
+        this.introSprite.visible = false;
+        this.titleSprite.visible = true;
+        this.title = true;
+        this.delta = 0;
+    }
 
-	start(stage)
-	{
+    start(stage)
+    {
         stage.addChild(this.titleSprite);
-		stage.addChild(this.introSprite);
-	}
+        stage.addChild(this.introSprite);
+    }
 
-	stop(stage)
-	{
-		
+    stop(stage)
+    {
+        
         stage.removeChild(this.titleSprite);
-		stage.removeChild(this.introSprite);
+        stage.removeChild(this.introSprite);
 
-		this.reset();
-	}
+        this.reset();
+    }
 
-	update(delta)
-	{
-		return false;
-	}
+    update(delta)
+    {
+        return false;
+    }
 
-	keyPressed()
-	{
+    keyPressed()
+    {
 
-		if(this.title)
-		{
-			this.introSprite.visible = true;
-			this.titleSprite.visible = false;
-			this.title = false;
-		}
-		else
-			return true;
+        if(this.title)
+        {
+            this.introSprite.visible = true;
+            this.titleSprite.visible = false;
+            this.title = false;
+        }
+        else
+            return true;
 
-		return false;
-	}
+        return false;
+    }
 
-	keyReleased()
-	{
-		return false;
-	}
+    keyReleased()
+    {
+        return false;
+    }
 }
